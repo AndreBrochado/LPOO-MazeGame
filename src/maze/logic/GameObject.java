@@ -7,10 +7,18 @@ public class GameObject {
 
     final int VISIBLE = 0, INVISIBLE = 1;
 
-    private int x, y;
-    private int state = 0;
-    private boolean impassable = false, equipable = false;
-    private char[] representations;
+    protected int x, y;
+    protected int state = 0;
+    protected boolean impassable = false, equipable = false;
+    protected char[] representations;
+
+    public GameObject(){
+        this.x = -1;
+        this.y = -1;
+        char[] initializer = {' ', ' '};
+        this.representations = new char[initializer.length];
+        System.arraycopy(initializer, 0, this.representations, 0, initializer.length);
+    }
 
     public GameObject(int x, int y, char[] representations){
         this.x = x;
@@ -23,5 +31,9 @@ public class GameObject {
         this(x, y, representations);
         this.impassable = impassable;
         this.equipable = equipable;
+    }
+
+    public char getRepresentation(){
+        return representations[state];
     }
 }

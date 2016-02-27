@@ -11,4 +11,9 @@ public class GameCharacter extends GameObject {
         super(x, y, representations, true, false);
     }
 
+    public void move(int deltax, int deltay){
+        this.x += deltax;
+        this.y += deltay;
+    }
+
 }
