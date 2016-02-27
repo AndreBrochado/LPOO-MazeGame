@@ -48,6 +48,10 @@ hs_err_pid*
 # IntelliJ
 /out/
 
+# IntellIJ Manually Added
+/.idea/
+MazeGame.iml
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
