@@ -14,17 +14,33 @@ private char input_reader(){
     char c = reader.next().charAt(0);
     return c;
 }
-    public static void displayGameMenu(String[] s){
+    private static void displayGameMenu(String[] s){
         for(int i =0; i < s.length; i++){
             System.out.println((i+1) + ". " + s[i]);
         }
         System.out.print("Insert your choice: ");
     }
 
+    private static int askForUserInput(int min, int max){
+
+        int ch = 0;
+        boolean invalid_input = true;
+        while(invalid_input) {
+
+            Scanner sc = new Scanner(System.in);
+            ch = sc.nextInt();
+            if (ch <= max && ch >= min) {
+                invalid_input = false;
+                break;
+            }
+            System.out.print("Invalid input, insert your choice: ");
+        }
+        return ch;
+    }
+
     public static void ChooseGameMode (){
 
         int ch;
-        Scanner sc=new Scanner(System.in);
 
         while(true)
         {
@@ -36,7 +52,8 @@ private char input_reader(){
             s[3] = "Exit";
 
             displayGameMenu(s);
-            ch = sc.nextInt();
+            ch = askForUserInput(1,4);
+
             switch(ch)
             {
                 case 1:
@@ -50,8 +67,7 @@ private char input_reader(){
                     break;
                 case 4:
                     System.exit(0);
-                default:
-                    System.out.println("invalid");
+
             }
         }
 
@@ -60,7 +76,6 @@ private char input_reader(){
     public static void main(String[] args){
 
         int ch;
-        Scanner sc=new Scanner(System.in);
 
         while(true)
         {
@@ -70,7 +85,9 @@ private char input_reader(){
             s[1] = "Exit";
 
             displayGameMenu(s);
-            ch = sc.nextInt();
+
+            ch = askForUserInput(1,2);
+
             switch(ch)
             {
                 case 1:
@@ -78,8 +95,6 @@ private char input_reader(){
                     break;
                 case 2:
                     System.exit(0);
-                default:
-                    System.out.println("invalid");
             }
         }
     }
