@@ -14,7 +14,7 @@ public class MazeGame {
     char c = reader.next().charAt(0);
     return c;
     }
-    
+
     private void displayGameMenu(String[] s){
         for(int i =0; i < s.length; i++){
             System.out.println((i+1) + ". " + s[i]);
@@ -45,12 +45,7 @@ public class MazeGame {
 
         while(true)
         {
-            String[] s;
-            s = new String[4];
-            s[0] = "Immobile Dragon";
-            s[1] = "Dragon with random movement";
-            s[2] = "Dragon with random movement and rest";
-            s[3] = "Exit";
+            String[] s = {"Immobile Dragon","Dragon with random movement","Dragon with random movement and rest","Exit"};
 
             displayGameMenu(s);
             ch = askForUserInput(1,4);
@@ -80,10 +75,7 @@ public class MazeGame {
 
         while(true)
         {
-            String[] s;
-            s = new String[2];
-            s[0] = "New Game";
-            s[1] = "Exit";
+            String[] s = {"New Game", "Exit"};
 
             game.displayGameMenu(s);
 
