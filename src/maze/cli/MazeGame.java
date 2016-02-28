@@ -9,35 +9,44 @@ import java.util.Scanner;
 
 public class MazeGame {
 
-public char input_reader(){
+private char input_reader(){
     Scanner reader = new Scanner(System.in);
     char c = reader.next().charAt(0);
     return c;
 }
+    public static void displayGameMenu(String[] s){
+        for(int i =0; i < s.length; i++){
+            System.out.println((i+1) + ". " + s[i]);
+        }
+        System.out.print("Insert your choice: ");
+    }
 
-    public void NewGameType(){
+    public static void ChooseGameMode (){
 
         int ch;
         Scanner sc=new Scanner(System.in);
 
         while(true)
         {
-            System.out.println("1. Immobile Dragon");
-            System.out.println("2. Dragon with random movement");
-            System.out.println("3. Dragon with random movement and rest");
-            System.out.println("4. Exit");
-            System.out.print("Insert your choice: ");
+            String[] s;
+            s = new String[4];
+            s[0] = "Immobile Dragon";
+            s[1] = "Dragon with random movement";
+            s[2] = "Dragon with random movement and rest";
+            s[3] = "Exit";
+
+            displayGameMenu(s);
             ch = sc.nextInt();
             switch(ch)
             {
                 case 1:
-                    Game1();
+                    System.out.println("Game1;");
                     break;
                 case 2:
-                    Game2();
+                    System.out.println("Game2;");
                     break;
                 case 3:
-                    Game3();
+                    System.out.println("Game3;");
                     break;
                 case 4:
                     System.exit(0);
@@ -55,14 +64,17 @@ public char input_reader(){
 
         while(true)
         {
-            System.out.println("1. New Game");
-            System.out.println("2. Exit");
-            System.out.print("Insert your choice: ");
+            String[] s;
+            s = new String[2];
+            s[0] = "New Game";
+            s[1] = "Exit";
+
+            displayGameMenu(s);
             ch = sc.nextInt();
             switch(ch)
             {
                 case 1:
-                    NewGameType();
+                    ChooseGameMode();
                     break;
                 case 2:
                     System.exit(0);
