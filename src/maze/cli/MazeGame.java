@@ -9,19 +9,20 @@ import java.util.Scanner;
 
 public class MazeGame {
 
-private char input_reader(){
+    private char input_reader(){
     Scanner reader = new Scanner(System.in);
     char c = reader.next().charAt(0);
     return c;
-}
-    private static void displayGameMenu(String[] s){
+    }
+    
+    private void displayGameMenu(String[] s){
         for(int i =0; i < s.length; i++){
             System.out.println((i+1) + ". " + s[i]);
         }
         System.out.print("Insert your choice: ");
     }
 
-    private static int askForUserInput(int min, int max){
+    private int askForUserInput(int min, int max){
 
         int ch = 0;
         boolean invalid_input = true;
@@ -38,7 +39,7 @@ private char input_reader(){
         return ch;
     }
 
-    public static void ChooseGameMode (){
+    public void ChooseGameMode (){
 
         int ch;
 
@@ -74,7 +75,7 @@ private char input_reader(){
     }
 
     public static void main(String[] args){
-
+        MazeGame game = new MazeGame();
         int ch;
 
         while(true)
@@ -84,14 +85,14 @@ private char input_reader(){
             s[0] = "New Game";
             s[1] = "Exit";
 
-            displayGameMenu(s);
+            game.displayGameMenu(s);
 
-            ch = askForUserInput(1,2);
+            ch = game.askForUserInput(1,2);
 
             switch(ch)
             {
                 case 1:
-                    ChooseGameMode();
+                    game.ChooseGameMode();
                     break;
                 case 2:
                     System.exit(0);
