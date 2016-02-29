@@ -9,13 +9,13 @@ import java.util.Scanner;
 
 public class MazeGame {
 
-    private char input_reader(){
+    private char inputReader(){
     Scanner reader = new Scanner(System.in);
     char c = reader.next().charAt(0);
     return c;
     }
 
-    private void displayGameMenu(String[] s){
+    private void displayMenu(String[] s){
         for(int i =0; i < s.length; i++){
             System.out.println((i+1) + ". " + s[i]);
         }
@@ -24,33 +24,34 @@ public class MazeGame {
 
     private int askForUserInput(int min, int max){
 
-        int ch = 0;
-        boolean invalid_input = true;
-        while(invalid_input) {
+        int choice= 0;
+        boolean invalidInput = true;
+        while(invalidInput) {
 
             Scanner sc = new Scanner(System.in);
-            ch = sc.nextInt();
-            if (ch <= max && ch >= min) {
-                invalid_input = false;
+            choice = sc.nextInt();
+            if (choice <= max && choice >= min) {
+                invalidInput = false;
                 break;
             }
             System.out.print("Invalid input, insert your choice: ");
         }
-        return ch;
+        return choice;
     }
 
-    public void ChooseGameMode (){
+    public void chooseGameMode(){
 
-        int ch;
+        int choice;
 
+        //TODO: replace while(true) to exit on 4
         while(true)
         {
-            String[] s = {"Immobile Dragon","Dragon with random movement","Dragon with random movement and rest","Exit"};
+            String[] options = {"Immobile Dragon","Dragon with random movement","Dragon with random movement and rest","Exit"};
 
-            displayGameMenu(s);
-            ch = askForUserInput(1,4);
+            displayMenu(options);
+            choice = askForUserInput(1,4);
 
-            switch(ch)
+            switch(choice)
             {
                 case 1:
                     System.out.println("Game1;");
@@ -71,20 +72,21 @@ public class MazeGame {
 
     public static void main(String[] args){
         MazeGame game = new MazeGame();
-        int ch;
+        int choice;
 
+        //TODO: replace while(true) to exit on 2
         while(true)
         {
-            String[] s = {"New Game", "Exit"};
+            String[] options = {"New Game", "Exit"};
 
-            game.displayGameMenu(s);
+            game.displayMenu(options);
 
-            ch = game.askForUserInput(1,2);
+            choice = game.askForUserInput(1,2);
 
-            switch(ch)
+            switch(choice)
             {
                 case 1:
-                    game.ChooseGameMode();
+                    game.chooseGameMode();
                     break;
                 case 2:
                     System.exit(0);
