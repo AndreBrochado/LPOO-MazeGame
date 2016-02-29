@@ -58,6 +58,42 @@ public class Board {
         }
     }
 
+    private void moveActions(GameCharacter character, int deltax, int deltay){
+        if(board[character.y+deltay][character.x+deltax].impassable == false){
+            if(character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
+                character.state = GameCharacter.VISIBLE;
+                board[character.y+deltay][character.x+deltax].state = GameObject.VISIBLE;
+            }
+            if(board[character.y+deltay][character.x+deltax].equipable == true && board[character.y+deltay][character.x+deltax].state == GameObject.VISIBLE) {
+                character.state = GameCharacter.ARMED;
+                board[character.y+deltay][character.x+deltax].state = GameObject.INVISIBLE;
+            }
+            character.move(deltax, deltay);
+        }
+        //TODO: combat code / function
+    }
+
+    public void moveHero(char userInput){
+        int deltax=0, deltay=0;
+        switch(userInput){
+            case 'W':
+                deltay = -1;
+                break;
+            case 'S':
+                deltay = 1;
+                break;
+            case 'A':
+                deltax = -1;
+                break;
+            case 'D':
+                deltax = 1;
+                break;
+            default:
+                return;
+        }
+        moveActions(characters[0], deltax, deltay);
+    }
+
     //FOR TESTING PURPOSES
     public static void main(String[] args){
         GameObject empty = new GameObject();
