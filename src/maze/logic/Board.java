@@ -58,6 +58,22 @@ public class Board {
         }
     }
 
+    private void checkCombat(){
+        GameCharacter hero = characters[0];
+        for(int dx = -1; dx <= 1; dx++){
+            for(int dy = -1; dy <= 1; dy++){
+                if(dx != 0 || dy != 0){
+                    if(board[hero.y+dy][hero.x+dx].representations[0] == 'D'){
+                        if(hero.state == GameCharacter.ARMED)
+                            board[hero.y+dy][hero.x+dx].state = GameCharacter.DEAD;
+                        else
+                            hero.state = GameCharacter.DEAD;
+                    }
+                }
+            }
+        }
+    }
+
     private void moveActions(GameCharacter character, int deltax, int deltay){
         if(board[character.y+deltay][character.x+deltax].impassable == false){
             if(character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
@@ -70,7 +86,7 @@ public class Board {
             }
             character.move(deltax, deltay);
         }
-        //TODO: combat code / function
+        checkCombat();
     }
 
     public void moveHero(char userInput){
@@ -92,6 +108,31 @@ public class Board {
                 return;
         }
         moveActions(characters[0], deltax, deltay);
+    }
+
+    private GameObject getExit(){
+        for(GameObject obj:objects)
+            if(obj.representations[0] == 'S') {
+                return obj;
+            }
+        return null;
+    }
+
+    public int getBoardState(){
+        if(characters[0].state == GameCharacter.DEAD)
+            return 1;
+
+        boolean dragonsDead=true;
+        for(int i = 1; i < characters.length; i++){
+            if(characters[1].state != GameCharacter.DEAD)
+                dragonsDead = false;
+        }
+
+        GameObject exit = getExit();
+        if(dragonsDead && characters[0].x == exit.x && characters[0].y == exit.y)
+            return 2;
+
+        return 0;
     }
 
     //FOR TESTING PURPOSES
