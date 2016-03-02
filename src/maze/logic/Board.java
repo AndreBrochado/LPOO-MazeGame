@@ -46,7 +46,10 @@ public class Board {
         }
         for(int i = 2; i < objects.length; i++)
             board[objects[i].y][objects[i].x] = objects[i];
-        for (GameCharacter character : characters) board[character.y][character.x] = character;
+        for (GameCharacter character : characters){
+            if(character.state != GameCharacter.INVISIBLE)
+                board[character.y][character.x] = character;
+        }
     }
 
     public void print(){
