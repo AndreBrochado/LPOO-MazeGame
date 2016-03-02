@@ -43,7 +43,7 @@ public class MazeGame {
         return choice;
     }
 
-    private Board prepareGameBoard(){
+    public Board prepareGameBoard(){
         GameObject empty = new GameObject();
 
         char[] wallReps = {'X', ' '};
@@ -68,10 +68,10 @@ public class MazeGame {
 
     private boolean playGame(boolean dragonMoves, boolean dragonSleeps){
         Board gameBoard = prepareGameBoard();
+        gameBoard.updateBoard();
 
-        int boardState = gameBoard.getBoardState();
+        int boardState;
         do{
-
             gameBoard.print();
             System.out.print("Insert your movement choice (W - up, A - left, S - down, D - right: ");
             char input = inputReader();

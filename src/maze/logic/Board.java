@@ -25,7 +25,7 @@ public class Board {
         System.arraycopy(objects, 0, this.objects, 0, objects.length);
         this.characters = new GameCharacter[characters.length];
         System.arraycopy(characters, 0, this.characters, 0, characters.length);
-        updateBoard();
+        //updateBoard();
     }
 
     public void addObject(GameObject object){
@@ -74,6 +74,8 @@ public class Board {
                             dragon.state = GameCharacter.DEAD;
                         else if (dragon.getRepresentation() == GameCharacter.ASLEEP)
                             dragon.state = GameCharacter.DEAD;
+                        else
+                            hero.state = GameCharacter.DEAD;
                     }
                     }
                     catch(ArrayIndexOutOfBoundsException ignored){}
@@ -167,6 +169,10 @@ public class Board {
             dragonSleepHandler(characters[i]);
     }
 
+    public GameObject[][] getBoard() {
+        return board;
+    }
+
     private GameObject getExit(){
         for(GameObject obj:objects)
             if(obj.representations[0] == 'S') {
@@ -190,6 +196,10 @@ public class Board {
             return 2;
 
         return 0;
+    }
+
+    public GameCharacter[] getCharacters() {
+        return characters;
     }
 
     //FOR TESTING PURPOSES
