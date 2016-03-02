@@ -5,7 +5,7 @@ package maze.logic;
  */
 public class GameObject {
 
-    final static int VISIBLE = 0, INVISIBLE = 1;
+    final static int VISIBLE = 0, INVISIBLE = 1, ASLEEP = 2;
 
     protected int x, y;
     protected int state = 0;

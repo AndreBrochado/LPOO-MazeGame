@@ -1,4 +1,8 @@
 package maze.cli;
+import maze.logic.Board;
+import maze.logic.GameCharacter;
+import maze.logic.GameObject;
+
 import java.util.Scanner;
 
 /**
@@ -39,6 +43,50 @@ public class MazeGame {
         return choice;
     }
 
+    private Board prepareGameBoard(){
+        GameObject empty = new GameObject();
+
+        char[] wallReps = {'X', ' '};
+        GameObject wall = new GameObject(-1, -1, wallReps, true, false);
+
+        char[] swordReps = {'E', ' '};
+        GameObject sword = new GameObject(1, 8, swordReps, false, true);
+
+        char[] heroReps = {'H', ' ', 'A'};
+        GameCharacter hero = new GameCharacter(1, 1, heroReps);
+
+        char[] dragonReps = {'D', ' ', 'F', 'd'};
+        GameCharacter dragon = new GameCharacter(1, 3, dragonReps);
+
+        char[] exitReps = {'S', ' '};
+        GameObject exit = new GameObject(9, 5, exitReps);
+
+        GameObject[] objects = {empty, wall, sword, exit};
+        GameCharacter[] characters = {hero, dragon};
+        return new Board(10, 10, objects, characters);
+    }
+
+    private boolean playGame(boolean dragonMoves, boolean dragonSleeps){
+        Board gameBoard = prepareGameBoard();
+
+        int boardState = gameBoard.getBoardState();
+        do{
+
+            gameBoard.print();
+            System.out.print("Insert your movement choice (W - up, A - left, S - down, D - right: ");
+            char input = inputReader();
+            gameBoard.moveHero(input);
+            gameBoard.updateBoard();
+            if(dragonSleeps)
+                gameBoard.handleAllDragonsSleep();
+            if(dragonMoves)
+                gameBoard.moveAllDragons();
+            boardState = gameBoard.getBoardState();
+        }while(boardState == 0);
+
+        return boardState != 1;
+    }
+
     public void chooseGameMode(){
 
         int choice;
@@ -50,22 +98,27 @@ public class MazeGame {
 
             displayMenu(options);
             choice = askForUserInput(1,4);
+            boolean playerWon = false;
 
             switch(choice)
             {
                 case 1:
-                    System.out.println("Game1;");
+                    playerWon = playGame(false, false);
                     break;
                 case 2:
-                    System.out.println("Game2;");
+                    playerWon = playGame(true, false);
                     break;
                 case 3:
-                    System.out.println("Game3;");
+                    playerWon = playGame(true, true);
                     break;
                 case 4:
                     System.exit(0);
 
             }
+            if(playerWon)
+                System.out.println("Congratulations! You won the game!");
+            else
+                System.out.println("You lost the game!");
         }
 
     }

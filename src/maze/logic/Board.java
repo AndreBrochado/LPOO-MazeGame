@@ -1,6 +1,7 @@
 package maze.logic;
 
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by Andre on 27/02/2016.
@@ -48,7 +49,7 @@ public class Board {
         for (GameCharacter character : characters) board[character.y][character.x] = character;
     }
 
-    public void printBoard(){
+    public void print(){
         for(GameObject[] line:board){
             for(GameObject obj:line) {
                 System.out.print(obj.getRepresentation());
@@ -63,12 +64,16 @@ public class Board {
         for(int dx = -1; dx <= 1; dx++){
             for(int dy = -1; dy <= 1; dy++){
                 if(dx != 0 || dy != 0){
-                    if(board[hero.y+dy][hero.x+dx].representations[0] == 'D'){
-                        if(hero.state == GameCharacter.ARMED)
-                            board[hero.y+dy][hero.x+dx].state = GameCharacter.DEAD;
-                        else
-                            hero.state = GameCharacter.DEAD;
+                    try{
+                    if(board[hero.y+dy][hero.x+dx].representations[0] == 'D') {
+                        GameObject dragon = board[hero.y + dy][hero.x + dx];
+                        if (hero.state == GameCharacter.ARMED)
+                            dragon.state = GameCharacter.DEAD;
+                        else if (dragon.getRepresentation() == GameCharacter.ASLEEP)
+                            dragon.state = GameCharacter.DEAD;
                     }
+                    }
+                    catch(ArrayIndexOutOfBoundsException ignored){}
                 }
             }
         }
@@ -110,6 +115,55 @@ public class Board {
         moveActions(characters[0], deltax, deltay);
     }
 
+    private void moveDragon(GameCharacter dragon){
+        if(dragon.state == GameCharacter.VISIBLE) {
+            Random random = new Random();
+            int deltax = 0, deltay = 0;
+            int movement = random.nextInt(5);
+            switch (movement) {
+                case 0:
+                    return;
+                case 1:
+                    deltax = -1;
+                    break;
+                case 2:
+                    deltax = 1;
+                    break;
+                case 3:
+                    deltay = -1;
+                    break;
+                case 4:
+                    deltay = 1;
+                    break;
+            }
+            moveActions(dragon, deltax, deltay);
+        }
+    }
+
+    public void moveAllDragons(){
+        for(int i = 1; i < characters.length; i++)
+            moveDragon(characters[i]);
+    }
+
+    private void dragonSleepHandler(GameCharacter dragon){
+        Random random = new Random();
+        int action = random.nextInt(5);
+        if(dragon.state == GameCharacter.VISIBLE){
+            if(action == 0)
+                dragon.state = GameCharacter.ASLEEP;
+        }
+        else if(dragon.state == GameCharacter.ASLEEP){
+            action = random.nextInt(3);
+            if(action == 0)
+                dragon.state = GameCharacter.VISIBLE;
+        }
+    }
+
+    public void handleAllDragonsSleep(){
+        for(int i = 1; i < characters.length; i++)
+            dragonSleepHandler(characters[i]);
+    }
+
     private GameObject getExit(){
         for(GameObject obj:objects)
             if(obj.representations[0] == 'S') {
@@ -124,7 +178,7 @@ public class Board {
 
         boolean dragonsDead=true;
         for(int i = 1; i < characters.length; i++){
-            if(characters[1].state != GameCharacter.DEAD)
+            if(characters[i].state != GameCharacter.DEAD)
                 dragonsDead = false;
         }
 
@@ -137,7 +191,7 @@ public class Board {
 
     //FOR TESTING PURPOSES
     public static void main(String[] args){
-        GameObject empty = new GameObject();
+       /* GameObject empty = new GameObject();
         char[] wallReps = {'X', ' '};
         GameObject wall = new GameObject(-1, -1, wallReps, true, false);
         char[] swordReps = {'E', ' '};
@@ -147,7 +201,7 @@ public class Board {
         GameObject[] objects = {empty, wall, sword};
         GameCharacter[] characters = {hero};
         Board b = new Board(10, 10, objects, characters);
-        b.printBoard();
+        b.print();*/
     }
 
 }
