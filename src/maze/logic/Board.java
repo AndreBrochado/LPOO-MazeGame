@@ -13,13 +13,13 @@ public class Board {
     private GameObject[] objects;
     private GameCharacter[] characters;
 
-    public Board(int height, int width){
+    public Board(int height, int width) {
         this.height = height;
         this.width = width;
         this.board = new GameObject[height][width];
     }
 
-    public Board(int height, int width, GameObject[] objects, GameCharacter[] characters){
+    public Board(int height, int width, GameObject[] objects, GameCharacter[] characters) {
         this(height, width);
         this.objects = new GameObject[objects.length];
         System.arraycopy(objects, 0, this.objects, 0, objects.length);
@@ -28,33 +28,37 @@ public class Board {
         //updateBoard();
     }
 
-    public void addObject(GameObject object){
+    /*public void addObject(GameObject object){
         this.objects = Arrays.copyOf(this.objects, this.objects.length+1);
         this.objects[this.objects.length-1] = object;
-    }
+    }*/
 
-    public void updateBoard(){
-        for(int i = 0; i < height; i++) {
-            for(int j = 0; j < width; j++) {
-                if(i == 0 || j == 0 || i == height - 1 || j == width - 1)
+    public void updateBoard(boolean hasWalls) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if ((i == 0 || j == 0 || i == height - 1 || j == width - 1) && hasWalls)
                     board[i][j] = objects[1];
-                else if((j == 7 && i > 1 && i < 8) || (j == 5 && i > 1 && i < 8 && i != 5) || ((j == 2 || j == 3) && i > 1 && i != 5))
+                else if (((j == 7 && i > 1 && i < 8) || (j == 5 && i > 1 && i < 8 && i != 5) || ((j == 2 || j == 3) && i > 1 && i != 5)) && hasWalls)
                     board[i][j] = objects[1];
                 else
                     board[i][j] = objects[0];
             }
         }
-        for(int i = 2; i < objects.length; i++)
+        for (int i = 2; i < objects.length; i++)
             board[objects[i].y][objects[i].x] = objects[i];
-        for (GameCharacter character : characters){
-            if(character.state != GameCharacter.INVISIBLE)
+        for (GameCharacter character : characters) {
+            if (character.state != GameCharacter.INVISIBLE)
                 board[character.y][character.x] = character;
         }
     }
 
-    public void print(){
-        for(GameObject[] line:board){
-            for(GameObject obj:line) {
+    public void updateBoard() {
+        this.updateBoard(true);
+    }
+
+    public void print() {
+        for (GameObject[] line : board) {
+            for (GameObject obj : line) {
                 System.out.print(obj.getRepresentation());
                 System.out.print(' ');
             }
@@ -62,46 +66,46 @@ public class Board {
         }
     }
 
-    private void checkCombat(){
+    private void checkCombat() {
         GameCharacter hero = characters[0];
-        for(int dx = -1; dx <= 1; dx++){
-            for(int dy = -1; dy <= 1; dy++){
-                if(dx != 0 || dy != 0){
-                    try{
-                    if(board[hero.y+dy][hero.x+dx].representations[0] == 'D') {
-                        GameObject dragon = board[hero.y + dy][hero.x + dx];
-                        if (hero.state == GameCharacter.ARMED)
-                            dragon.state = GameCharacter.DEAD;
-                        else if (dragon.getRepresentation() == GameCharacter.ASLEEP)
-                            dragon.state = GameCharacter.DEAD;
-                        else
-                            hero.state = GameCharacter.DEAD;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx != 0 || dy != 0) {
+                    try {
+                        if (board[hero.y + dy][hero.x + dx].representations[0] == 'D') {
+                            GameObject dragon = board[hero.y + dy][hero.x + dx];
+                            if (hero.state == GameCharacter.ARMED)
+                                dragon.state = GameCharacter.DEAD;
+                            else if (dragon.getRepresentation() == GameCharacter.ASLEEP)
+                                dragon.state = GameCharacter.DEAD;
+                            else
+                                hero.state = GameCharacter.DEAD;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException ignored) {
                     }
-                    }
-                    catch(ArrayIndexOutOfBoundsException ignored){}
                 }
             }
         }
     }
 
-    private void moveActions(GameCharacter character, int deltax, int deltay){
-        if(board[character.y+deltay][character.x+deltax].impassable == false){
-            if(character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
+    private void moveActions(GameCharacter character, int deltax, int deltay) {
+        if (board[character.y + deltay][character.x + deltax].impassable == false) {
+            if (character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
                 character.state = GameCharacter.VISIBLE;
-                board[character.y+deltay][character.x+deltax].state = GameObject.VISIBLE;
+                board[character.y + deltay][character.x + deltax].state = GameObject.VISIBLE;
             }
-            if(board[character.y+deltay][character.x+deltax].equipable == true && board[character.y+deltay][character.x+deltax].state == GameObject.VISIBLE) {
+            if (board[character.y + deltay][character.x + deltax].equipable == true && board[character.y + deltay][character.x + deltax].state == GameObject.VISIBLE) {
                 character.state = GameCharacter.ARMED;
-                board[character.y+deltay][character.x+deltax].state = GameObject.INVISIBLE;
+                board[character.y + deltay][character.x + deltax].state = GameObject.INVISIBLE;
             }
             character.move(deltax, deltay);
         }
         checkCombat();
     }
 
-    public void moveHero(char userInput){
-        int deltax=0, deltay=0;
-        switch(userInput){
+    public void moveHero(char userInput) {
+        int deltax = 0, deltay = 0;
+        switch (userInput) {
             case 'W':
                 deltay = -1;
                 break;
@@ -120,8 +124,8 @@ public class Board {
         moveActions(characters[0], deltax, deltay);
     }
 
-    private void moveDragon(GameCharacter dragon){
-        if(dragon.state == GameCharacter.VISIBLE) {
+    public void moveDragon(GameCharacter dragon) {
+        if (dragon.state == GameCharacter.VISIBLE) {
             Random random = new Random();
             int deltax = 0, deltay = 0;
             int movement = random.nextInt(5);
@@ -145,27 +149,26 @@ public class Board {
         }
     }
 
-    public void moveAllDragons(){
-        for(int i = 1; i < characters.length; i++)
+    public void moveAllDragons() {
+        for (int i = 1; i < characters.length; i++)
             moveDragon(characters[i]);
     }
 
-    private void dragonSleepHandler(GameCharacter dragon){
+    private void dragonSleepHandler(GameCharacter dragon) {
         Random random = new Random();
         int action = random.nextInt(5);
-        if(dragon.state == GameCharacter.VISIBLE){
-            if(action == 0)
+        if (dragon.state == GameCharacter.VISIBLE) {
+            if (action == 0)
                 dragon.state = GameCharacter.ASLEEP;
-        }
-        else if(dragon.state == GameCharacter.ASLEEP){
+        } else if (dragon.state == GameCharacter.ASLEEP) {
             action = random.nextInt(3);
-            if(action == 0)
+            if (action == 0)
                 dragon.state = GameCharacter.VISIBLE;
         }
     }
 
-    public void handleAllDragonsSleep(){
-        for(int i = 1; i < characters.length; i++)
+    public void handleAllDragonsSleep() {
+        for (int i = 1; i < characters.length; i++)
             dragonSleepHandler(characters[i]);
     }
 
@@ -173,26 +176,26 @@ public class Board {
         return board;
     }
 
-    private GameObject getExit(){
-        for(GameObject obj:objects)
-            if(obj.representations[0] == 'S') {
+    private GameObject getExit() {
+        for (GameObject obj : objects)
+            if (obj.representations[0] == 'S') {
                 return obj;
             }
         return null;
     }
 
-    public int getBoardState(){
-        if(characters[0].state == GameCharacter.DEAD)
+    public int getBoardState() {
+        if (characters[0].state == GameCharacter.DEAD)
             return 1;
 
-        boolean dragonsDead=true;
-        for(int i = 1; i < characters.length; i++){
-            if(characters[i].state != GameCharacter.DEAD)
+        boolean dragonsDead = true;
+        for (int i = 1; i < characters.length; i++) {
+            if (characters[i].state != GameCharacter.DEAD)
                 dragonsDead = false;
         }
 
         GameObject exit = getExit();
-        if(dragonsDead && characters[0].x == exit.x && characters[0].y == exit.y)
+        if (dragonsDead && characters[0].x == exit.x && characters[0].y == exit.y)
             return 2;
 
         return 0;
@@ -202,19 +205,6 @@ public class Board {
         return characters;
     }
 
-    //FOR TESTING PURPOSES
-    public static void main(String[] args){
-       /* GameObject empty = new GameObject();
-        char[] wallReps = {'X', ' '};
-        GameObject wall = new GameObject(-1, -1, wallReps, true, false);
-        char[] swordReps = {'E', ' '};
-        GameObject sword = new GameObject(1, 8, swordReps, false, true);
-        char[] heroReps = {'H', ' ', 'A'};
-        GameCharacter hero = new GameCharacter(1, 1, heroReps);
-        GameObject[] objects = {empty, wall, sword};
-        GameCharacter[] characters = {hero};
-        Board b = new Board(10, 10, objects, characters);
-        b.print();*/
-    }
-
 }
+
+

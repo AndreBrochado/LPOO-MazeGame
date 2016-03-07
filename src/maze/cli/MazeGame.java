@@ -1,4 +1,5 @@
 package maze.cli;
+
 import maze.logic.Board;
 import maze.logic.GameCharacter;
 import maze.logic.GameObject;
@@ -10,27 +11,26 @@ import java.util.Scanner;
  */
 
 
-
 public class MazeGame {
 
-    private char inputReader(){
-    Scanner reader = new Scanner(System.in);
-    char c = reader.next().charAt(0);
-    return c;
+    private char inputReader() {
+        Scanner reader = new Scanner(System.in);
+        char c = reader.next().charAt(0);
+        return c;
     }
 
-    private void displayMenu(String[] s){
-        for(int i =0; i < s.length; i++){
-            System.out.println((i+1) + ". " + s[i]);
+    private void displayMenu(String[] s) {
+        for (int i = 0; i < s.length; i++) {
+            System.out.println((i + 1) + ". " + s[i]);
         }
         System.out.print("Insert your choice: ");
     }
 
-    private int askForUserInput(int min, int max){
+    private int askForUserInput(int min, int max) {
 
-        int choice= 0;
+        int choice = 0;
         boolean invalidInput = true;
-        while(invalidInput) {
+        while (invalidInput) {
 
             Scanner sc = new Scanner(System.in);
             choice = sc.nextInt();
@@ -43,7 +43,7 @@ public class MazeGame {
         return choice;
     }
 
-    public Board prepareGameBoard(){
+    public Board prepareGameBoard() {
         GameObject empty = new GameObject();
 
         char[] wallReps = {'X', ' '};
@@ -66,42 +66,40 @@ public class MazeGame {
         return new Board(10, 10, objects, characters);
     }
 
-    private boolean playGame(boolean dragonMoves, boolean dragonSleeps){
+    private boolean playGame(boolean dragonMoves, boolean dragonSleeps) {
         Board gameBoard = prepareGameBoard();
         gameBoard.updateBoard();
 
         int boardState;
-        do{
+        do {
             gameBoard.print();
             System.out.print("Insert your movement choice (W - up, A - left, S - down, D - right: ");
             char input = inputReader();
             gameBoard.moveHero(input);
             gameBoard.updateBoard();
-            if(dragonSleeps)
+            if (dragonSleeps)
                 gameBoard.handleAllDragonsSleep();
-            if(dragonMoves)
+            if (dragonMoves)
                 gameBoard.moveAllDragons();
             boardState = gameBoard.getBoardState();
-        }while(boardState == 0);
+        } while (boardState == 0);
 
         return boardState != 1;
     }
 
-    public void chooseGameMode(){
+    public void chooseGameMode() {
 
         int choice;
 
         //TODO: replace while(true) to exit on 4
-        while(true)
-        {
-            String[] options = {"Immobile Dragon","Dragon with random movement","Dragon with random movement and rest","Exit"};
+        while (true) {
+            String[] options = {"Immobile Dragon", "Dragon with random movement", "Dragon with random movement and rest", "Exit"};
 
             displayMenu(options);
-            choice = askForUserInput(1,4);
+            choice = askForUserInput(1, 4);
             boolean playerWon = false;
 
-            switch(choice)
-            {
+            switch (choice) {
                 case 1:
                     playerWon = playGame(false, false);
                     break;
@@ -115,7 +113,7 @@ public class MazeGame {
                     System.exit(0);
 
             }
-            if(playerWon)
+            if (playerWon)
                 System.out.println("Congratulations! You won the game!");
             else
                 System.out.println("You lost the game!");
@@ -123,21 +121,19 @@ public class MazeGame {
 
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         MazeGame game = new MazeGame();
         int choice;
 
         //TODO: replace while(true) to exit on 2
-        while(true)
-        {
+        while (true) {
             String[] options = {"New Game", "Exit"};
 
             game.displayMenu(options);
 
-            choice = game.askForUserInput(1,2);
+            choice = game.askForUserInput(1, 2);
 
-            switch(choice)
-            {
+            switch (choice) {
                 case 1:
                     game.chooseGameMode();
                     break;

@@ -5,12 +5,13 @@ import maze.logic.Board;
 import maze.logic.GameCharacter;
 import maze.logic.GameObject;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
  * Created by Vasco Ribeiro on 02/03/2016.
  */
-public class JUnit4 {
+public class FirstGameModeTests {
 
     //GameObject empty, wall, sword, exit;
     //GameCharacter hero, dragon;
@@ -36,7 +37,7 @@ public class JUnit4 {
     }*/
 
     @Test
-    public void testMoveHeroToFreeCell(){
+    public void testMoveHeroToFreeCell() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();
         b.updateBoard();
@@ -51,7 +52,7 @@ public class JUnit4 {
     }
 
     @Test
-    public void testMoveHeroToWall(){
+    public void testMoveHeroToWall() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();
         b.updateBoard();
@@ -67,7 +68,7 @@ public class JUnit4 {
     }
 
     @Test
-    public void testHeroEquipSword(){
+    public void testHeroEquipSword() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();
         GameCharacter hero = b.getCharacters()[0];
@@ -79,7 +80,7 @@ public class JUnit4 {
     }
 
     @Test
-    public void testHeroDeath(){
+    public void testHeroDeath() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();
         GameCharacter hero = b.getCharacters()[0];
@@ -90,7 +91,7 @@ public class JUnit4 {
     }
 
     @Test
-    public void testArmedHeroKillDragon(){
+    public void testArmedHeroKillDragon() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();
         GameCharacter hero = b.getCharacters()[0];
@@ -103,7 +104,7 @@ public class JUnit4 {
     }
 
     @Test
-    public void testHeroWin(){
+    public void testHeroWin() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();
         GameCharacter hero = b.getCharacters()[0];
@@ -119,7 +120,7 @@ public class JUnit4 {
     }
 
     @Test
-    public void testHeroTryWinWithoutSword(){
+    public void testHeroTryWinWithoutSword() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();
         GameCharacter hero = b.getCharacters()[0];
@@ -131,7 +132,7 @@ public class JUnit4 {
     }
 
     @Test
-    public void testHeroTryWinWithSword(){
+    public void testHeroTryWinWithSword() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();
         GameCharacter hero = b.getCharacters()[0];
