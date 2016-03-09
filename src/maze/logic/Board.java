@@ -25,7 +25,6 @@ public class Board {
         System.arraycopy(objects, 0, this.objects, 0, objects.length);
         this.characters = new GameCharacter[characters.length];
         System.arraycopy(characters, 0, this.characters, 0, characters.length);
-        //updateBoard();
     }
 
     /*public void addObject(GameObject object){
@@ -205,6 +204,9 @@ public class Board {
         return characters;
     }
 
+    public void setBoard(GameObject[][] board) {
+        this.board = board;
+    }
 }
 
 
