@@ -45,10 +45,10 @@ public class Board {
             }
         }
         for (int i = 2; i < objects.length; i++)
-            board[objects[i].y][objects[i].x] = objects[i];
+            board[objects[i].getY()][objects[i].getX()] = objects[i];
         for (GameCharacter character : characters) {
             if (character.state != GameCharacter.INVISIBLE)
-                board[character.y][character.x] = character;
+                board[character.getY()][character.getX()] = character;
         }
     }
 
@@ -72,8 +72,8 @@ public class Board {
             for (int dy = -1; dy <= 1; dy++) {
                 if (dx != 0 || dy != 0) {
                     try {
-                        if (board[hero.y + dy][hero.x + dx].representations[0] == 'D') {
-                            GameObject dragon = board[hero.y + dy][hero.x + dx];
+                        if (board[hero.getY() + dy][hero.getX() + dx].representations[0] == 'D') {
+                            GameObject dragon = board[hero.getY() + dy][hero.getX() + dx];
                             if (hero.state == GameCharacter.ARMED)
                                 dragon.state = GameCharacter.DEAD;
                             else if (dragon.getRepresentation() == GameCharacter.ASLEEP)
@@ -89,14 +89,14 @@ public class Board {
     }
 
     private void moveActions(GameCharacter character, int deltax, int deltay) {
-        if (board[character.y + deltay][character.x + deltax].impassable == false) {
+        if (board[character.getY() + deltay][character.getX() + deltax].impassable == false) {
             if (character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
                 character.state = GameCharacter.VISIBLE;
-                board[character.y + deltay][character.x + deltax].state = GameObject.VISIBLE;
+                board[character.getY() + deltay][character.getX() + deltax].state = GameObject.VISIBLE;
             }
-            if (board[character.y + deltay][character.x + deltax].equipable == true && board[character.y + deltay][character.x + deltax].state == GameObject.VISIBLE) {
+            if (board[character.getY() + deltay][character.getX() + deltax].equipable == true && board[character.getY() + deltay][character.getX() + deltax].state == GameObject.VISIBLE) {
                 character.state = GameCharacter.ARMED;
-                board[character.y + deltay][character.x + deltax].state = GameObject.INVISIBLE;
+                board[character.getY() + deltay][character.getX() + deltax].state = GameObject.INVISIBLE;
             }
             character.move(deltax, deltay);
         }
@@ -195,7 +195,7 @@ public class Board {
         }
 
         GameObject exit = getExit();
-        if (dragonsDead && characters[0].x == exit.x && characters[0].y == exit.y)
+        if (dragonsDead && characters[0].getX() == exit.getX() && characters[0].getY() == exit.getY())
             return 2;
 
         return 0;

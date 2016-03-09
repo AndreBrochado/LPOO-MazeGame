@@ -5,7 +5,6 @@ package maze.logic;
  */
 
 public class MazeBuilder {
-    public GameObject[][] buildMaze(int size){
-
-    }
+    /*public GameObject[][] buildMaze(int size){
+    }*/
 }

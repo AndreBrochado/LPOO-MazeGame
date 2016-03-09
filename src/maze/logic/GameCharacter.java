@@ -12,8 +12,8 @@ public class GameCharacter extends GameObject {
     }
 
     public void move(int deltax, int deltay) {
-        this.x += deltax;
-        this.y += deltay;
+        this.position.incrementX(deltax);
+        this.position.incrementY(deltay);
     }
 
 }
