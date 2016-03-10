@@ -61,19 +61,19 @@ public class MazeBuilder implements IMazeBuilder {
 
         int cornerDistance = 0;
         while (cornerDistance % 2 == 0)
-            cornerDistance = generator.nextInt(mazeSize-2) + 1;
+            cornerDistance = generator.nextInt(mazeSize - 2) + 1;
         int exitBorder = generator.nextInt(4);
 
         switch (exitBorder) {
             case 0:
             case 1:
-                exit.setX(exitBorder * (mazeSize-1));
+                exit.setX(exitBorder * (mazeSize - 1));
                 exit.setY(cornerDistance);
                 break;
             case 2:
             case 3:
                 exit.setX(cornerDistance);
-                exit.setY((exitBorder - 2) * (mazeSize-1));
+                exit.setY((exitBorder - 2) * (mazeSize - 1));
                 break;
         }
     }
@@ -87,8 +87,8 @@ public class MazeBuilder implements IMazeBuilder {
     }
 
     private void mazeCellPosition(Coordinate originalCoordinate, Coordinate destinationCoordenate) {
-        destinationCoordenate.setX(originalCoordinate.getX()* 2 + 1);
-        destinationCoordenate.setY(originalCoordinate.getY()* 2 + 1);
+        destinationCoordenate.setX(originalCoordinate.getX() * 2 + 1);
+        destinationCoordenate.setY(originalCoordinate.getY() * 2 + 1);
     }
 
     private void visitedCellsPosition(Coordinate originalCoordinate, Coordinate destinationCoordenate) {
@@ -175,14 +175,14 @@ public class MazeBuilder implements IMazeBuilder {
         while (!pathHistory.empty()) {
             while (isDeadEnd()) {
                 pathHistory.pop();
-                if(pathHistory.empty())
+                if (pathHistory.empty())
                     break;
                 else {
                     visitedGuideCell = pathHistory.peek();
                     mazeCellPosition(visitedGuideCell, guideCell);
                 }
             }
-            if(pathHistory.empty())
+            if (pathHistory.empty())
                 break;
             while (!validGuideCellMovement(direction, visitedGuideCell))
                 direction = generator.nextInt(4);
@@ -191,7 +191,7 @@ public class MazeBuilder implements IMazeBuilder {
         return maze;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         MazeBuilder mb = new MazeBuilder();
         GameObject[][] board = mb.buildMaze(21);
         Board b = new Board(21, 21);
