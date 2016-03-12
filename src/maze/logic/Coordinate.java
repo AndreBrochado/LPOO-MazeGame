@@ -3,6 +3,8 @@ package maze.logic;
 /**
  * Created by up201403057 on 09-03-2016.
  */
+
+//this class facilitate access to the position of the GameObjects
 public class Coordinate {
     private int x, y;
 

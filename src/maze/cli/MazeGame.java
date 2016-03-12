@@ -13,12 +13,14 @@ import java.util.Scanner;
 
 public class MazeGame {
 
+    //read inputReader and return the char
     private char inputReader() {
         Scanner reader = new Scanner(System.in);
         char c = reader.next().charAt(0);
         return c;
     }
 
+    //output function and allow to print all menus
     private void displayMenu(String[] s) {
         for (int i = 0; i < s.length; i++) {
             System.out.println((i + 1) + ". " + s[i]);
@@ -26,6 +28,7 @@ public class MazeGame {
         System.out.print("Insert your choice: ");
     }
 
+    //read inputReader and return the int
     private int askForUserInput(int min, int max) {
 
         int choice = 0;
@@ -43,6 +46,7 @@ public class MazeGame {
         return choice;
     }
 
+    //creates all the necessary GameObject to the board
     public Board prepareGameBoard() {
         GameObject empty = new GameObject();
 
@@ -66,6 +70,7 @@ public class MazeGame {
         return new Board(10, 10, objects, characters);
     }
 
+    //this function implement the gameplay
     private boolean playGame(boolean dragonMoves, boolean dragonSleeps) {
         Board gameBoard = prepareGameBoard();
         gameBoard.updateBoard();
@@ -87,6 +92,7 @@ public class MazeGame {
         return boardState != 1;
     }
 
+    //allow the player to choose one of the 3 GameMode
     public void chooseGameMode() {
 
         int choice;

@@ -38,6 +38,7 @@ public class MazeBuilder implements IMazeBuilder {
         pathHistory = new Stack<Coordinate>();
     }
 
+    //create a guideCell next to the exit
     private void createGuideCell() {
         guideCell = new Coordinate();
         if (exit.getX() == 0) {
@@ -55,6 +56,7 @@ public class MazeBuilder implements IMazeBuilder {
         }
     }
 
+    //creat the exit on an odd coordinate
     private void createExit() {
         char[] exitReps = {'S', ' '};
         exit = new GameObject(-1, -1, exitReps);
@@ -78,6 +80,7 @@ public class MazeBuilder implements IMazeBuilder {
         }
     }
 
+    //creat a array with all visited cells
     private void createVisitedCellsArray() {
         visitedCellsSize = (mazeSize - 1) / 2;
         visitedCells = new boolean[visitedCellsSize][visitedCellsSize];
@@ -86,25 +89,28 @@ public class MazeBuilder implements IMazeBuilder {
                 visitedCells[i][j] = false;
     }
 
+    //change the coordinates to the maze cell position
     private void mazeCellPosition(Coordinate originalCoordinate, Coordinate destinationCoordenate) {
         destinationCoordenate.setX(originalCoordinate.getX() * 2 + 1);
         destinationCoordenate.setY(originalCoordinate.getY() * 2 + 1);
     }
 
+    //change the coordinates to the visited cells position
     private void visitedCellsPosition(Coordinate originalCoordinate, Coordinate destinationCoordenate) {
         destinationCoordenate.setX((originalCoordinate.getX() - 1) / 2);
         destinationCoordenate.setY((originalCoordinate.getY() - 1) / 2);
     }
 
+    //true if the movement is possible and false if the movement is not possible
     private boolean validGuideCellMovement(int direction, Coordinate visitedGuideCell) {
         switch (direction) {
-            case 0:
+            case 0: //left
                 return visitedGuideCell.getX() - 1 >= 0 && !visitedCells[visitedGuideCell.getY()][visitedGuideCell.getX() - 1];
-            case 1:
+            case 1: //right
                 return visitedGuideCell.getX() + 1 < visitedCellsSize && !visitedCells[visitedGuideCell.getY()][visitedGuideCell.getX() + 1];
-            case 2:
+            case 2: //down
                 return visitedGuideCell.getY() - 1 >= 0 && !visitedCells[visitedGuideCell.getY() - 1][visitedGuideCell.getX()];
-            case 3:
+            case 3: //up
                 return visitedGuideCell.getY() + 1 < visitedCellsSize && !visitedCells[visitedGuideCell.getY() + 1][visitedGuideCell.getX()];
         }
         return false;
@@ -113,22 +119,22 @@ public class MazeBuilder implements IMazeBuilder {
     private void moveGuideCell(int direction) {
         Coordinate newPos = new Coordinate();
         switch (direction) {
-            case 0:
+            case 0: //left
                 newPos.setX(visitedGuideCell.getX() - 1);
                 newPos.setY(visitedGuideCell.getY());
                 maze[guideCell.getY()][guideCell.getX() - 1] = empty;
                 break;
-            case 1:
+            case 1: //right
                 newPos.setX(visitedGuideCell.getX() + 1);
                 newPos.setY(visitedGuideCell.getY());
                 maze[guideCell.getY()][guideCell.getX() + 1] = empty;
                 break;
-            case 2:
+            case 2: //down
                 newPos.setX(visitedGuideCell.getX());
                 newPos.setY(visitedGuideCell.getY() - 1);
                 maze[guideCell.getY() - 1][guideCell.getX()] = empty;
                 break;
-            case 3:
+            case 3: //up
                 newPos.setX(visitedGuideCell.getX());
                 newPos.setY(visitedGuideCell.getY() + 1);
                 maze[guideCell.getY() + 1][guideCell.getX()] = empty;

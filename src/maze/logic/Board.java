@@ -13,12 +13,14 @@ public class Board {
     private GameObject[] objects;
     private GameCharacter[] characters;
 
+    //base constructor
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
         this.board = new GameObject[height][width];
     }
 
+    //complex constructor
     public Board(int height, int width, GameObject[] objects, GameCharacter[] characters) {
         this(height, width);
         this.objects = new GameObject[objects.length];
@@ -32,6 +34,7 @@ public class Board {
         this.objects[this.objects.length-1] = object;
     }*/
 
+    //update the board with the position of all GameObjects
     public void updateBoard(boolean hasWalls) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -55,6 +58,7 @@ public class Board {
         this.updateBoard(true);
     }
 
+    //print on the screen the board
     public void print() {
         for (GameObject[] line : board) {
             for (GameObject obj : line) {
@@ -65,6 +69,7 @@ public class Board {
         }
     }
 
+    //check if Hero is next to Dragon and do the combat and its consequences
     private void checkCombat() {
         GameCharacter hero = characters[0];
         for (int dx = -1; dx <= 1; dx++) {
@@ -87,6 +92,7 @@ public class Board {
         }
     }
 
+    //move a GameCharacter if possible on horizontal (-1 or 1 in deltax) or in vertical (-1 or 1 in deltay)
     private void moveActions(GameCharacter character, int deltax, int deltay) {
         if (board[character.getY() + deltay][character.getX() + deltax].impassable == false) {
             if (character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
@@ -102,6 +108,7 @@ public class Board {
         checkCombat();
     }
 
+    //receive the userInput and moveHero in the corret direction depending on the input
     public void moveHero(char userInput) {
         int deltax = 0, deltay = 0;
         switch (userInput) {
@@ -123,6 +130,7 @@ public class Board {
         moveActions(characters[0], deltax, deltay);
     }
 
+    //this funciont move the dragon on a random direction
     public void moveDragon(GameCharacter dragon) {
         if (dragon.state == GameCharacter.VISIBLE) {
             Random random = new Random();
@@ -153,6 +161,7 @@ public class Board {
             moveDragon(characters[i]);
     }
 
+    //change the state of the dragon in a random way, dragon falls asleep in a probability of 1/5, and dragon wake up in a probability of 1/3
     private void dragonSleepHandler(GameCharacter dragon) {
         Random random = new Random();
         int action = random.nextInt(5);

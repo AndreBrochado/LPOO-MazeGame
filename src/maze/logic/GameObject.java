@@ -12,6 +12,7 @@ public class GameObject {
     protected boolean impassable = false, equipable = false;
     protected char[] representations;
 
+    //base constructor
     public GameObject() {
         this.position = new Coordinate();
         char[] initializer = {' ', ' '};
@@ -19,12 +20,14 @@ public class GameObject {
         System.arraycopy(initializer, 0, this.representations, 0, initializer.length);
     }
 
+    //intermediate constructor
     public GameObject(int x, int y, char[] representations) {
         this.position = new Coordinate(x, y);
         this.representations = new char[representations.length];
         System.arraycopy(representations, 0, this.representations, 0, representations.length);
     }
 
+    //complex constructor
     public GameObject(int x, int y, char[] representations, boolean impassable, boolean equipable) {
         this(x, y, representations);
         this.impassable = impassable;

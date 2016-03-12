@@ -76,7 +76,7 @@ public class FirstGameModeTests {
         b.updateBoard();
 
         b.moveHero('S');
-        assertEquals(2, hero.getState());
+        assertEquals(2, hero.getState()); //state 2 equals to hero armed
     }
 
     @Test
@@ -87,7 +87,7 @@ public class FirstGameModeTests {
         b.updateBoard();
 
         b.moveHero('S');
-        assertEquals(1, hero.getState());
+        assertEquals(1, hero.getState()); //state 1 equals to hero dead
     }
 
     @Test
@@ -96,11 +96,11 @@ public class FirstGameModeTests {
         Board b = game.prepareGameBoard();
         GameCharacter hero = b.getCharacters()[0];
         GameCharacter dragon = b.getCharacters()[1];
-        hero.setState(2);
+        hero.setState(2); //Hero get armed
         b.updateBoard();
 
         b.moveHero('S');
-        assertEquals(1, dragon.getState());
+        assertEquals(1, dragon.getState()); //state 1 equals to dragon dead
     }
 
     @Test
@@ -109,14 +109,14 @@ public class FirstGameModeTests {
         Board b = game.prepareGameBoard();
         GameCharacter hero = b.getCharacters()[0];
         GameCharacter dragon = b.getCharacters()[1];
-        dragon.setState(1);
+        dragon.setState(1); //dragon get dead
         hero.setX(8);
-        hero.setY(5);
+        hero.setY(5); //hero is next to exit
 
         b.updateBoard();
 
         b.moveHero('D');
-        assertEquals(2, b.getBoardState());
+        assertEquals(2, b.getBoardState()); //state 2 equals to win
     }
 
     @Test
@@ -128,7 +128,7 @@ public class FirstGameModeTests {
         hero.setY(5);
         b.updateBoard();
         b.moveHero('D');
-        assertEquals(0, b.getBoardState());
+        assertEquals(0, b.getBoardState()); //state 0 equals to normal state board
     }
 
     @Test
@@ -138,9 +138,9 @@ public class FirstGameModeTests {
         GameCharacter hero = b.getCharacters()[0];
         hero.setX(8);
         hero.setY(5);
-        hero.setState(2);
+        hero.setState(2); //hero armed
         b.updateBoard();
         b.moveHero('D');
-        assertEquals(0, b.getBoardState());
+        assertEquals(0, b.getBoardState()); //state 0 equals to normal state board
     }
 }
