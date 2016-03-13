@@ -69,25 +69,16 @@ public class Board {
         }
     }
 
-    //check if Hero is next to Dragon and do the combat and its consequences
+    //check if Hero is next to any Dragon and take account of combat consequences
     private void checkCombat() {
         GameCharacter hero = characters[0];
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                if (dx != 0 || dy != 0) {
-                    try {
-                        if (board[hero.getY() + dy][hero.getX() + dx].representations[0] == 'D') {
-                            GameObject dragon = board[hero.getY() + dy][hero.getX() + dx];
-                            if (hero.state == GameCharacter.ARMED)
-                                dragon.state = GameCharacter.DEAD;
-                            else if (dragon.getRepresentation() == GameCharacter.ASLEEP)
-                                dragon.state = GameCharacter.DEAD;
-                            else
-                                hero.state = GameCharacter.DEAD;
-                        }
-                    } catch (ArrayIndexOutOfBoundsException ignored) {
-                    }
-                }
+        for (int i = 1; i < characters.length; i++) {
+            //checks if a dragon is adjacent to hero
+            if (Math.abs(hero.getX() - characters[i].getX()) <= 1 && Math.abs(hero.getY() - characters[i].getY()) <= 1) {
+                if (hero.state == GameCharacter.ARMED)
+                    characters[i].state = GameCharacter.DEAD;
+                else if (characters[i].state != GameCharacter.ASLEEP)
+                    hero.state = GameCharacter.DEAD;
             }
         }
     }
