@@ -8,21 +8,28 @@ import java.util.Random;
  */
 public class Board {
 
+    public static final GameObject empty = new GameObject(), wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
+
     private int height, width;
     private GameObject[][] board;
     private GameObject[] objects;
     private GameCharacter[] characters;
 
     //base constructor
-    public Board(int height, int width) {
-        this.height = height;
-        this.width = width;
-        this.board = new GameObject[height][width];
+    public Board(int size) {
+        this.height = size;
+        this.width = size;
+        MazeBuilder builder = new MazeBuilder();
+        this.board = builder.buildMaze(size);
+        this.objects = new GameObject[2];
+        objects[0] = empty;
+        objects[1] = wall;
+        this.characters = new GameCharacter[0];
     }
 
     //complex constructor
-    public Board(int height, int width, GameObject[] objects, GameCharacter[] characters) {
-        this(height, width);
+    public Board(int size, GameObject[] objects, GameCharacter[] characters) {
+        this(size);
         this.objects = new GameObject[objects.length];
         System.arraycopy(objects, 0, this.objects, 0, objects.length);
         this.characters = new GameCharacter[characters.length];
@@ -36,14 +43,9 @@ public class Board {
 
     //update the board with the position of all GameObjects
     public void updateBoard(boolean hasWalls) {
-        for (int i = 0; i < height; i++) {
+        /*for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if ((i == 0 || j == 0 || i == height - 1 || j == width - 1) && hasWalls)
-                    board[i][j] = objects[1];
-                else if (((j == 7 && i > 1 && i < 8) || (j == 5 && i > 1 && i < 8 && i != 5) || ((j == 2 || j == 3) && i > 1 && i != 5)) && hasWalls)
-                    board[i][j] = objects[1];
-                else
-                    board[i][j] = objects[0];
+                if (
             }
         }
         for (int i = 2; i < objects.length; i++)
@@ -51,7 +53,7 @@ public class Board {
         for (GameCharacter character : characters) {
             if (character.state != GameCharacter.INVISIBLE)
                 board[character.getY()][character.getX()] = character;
-        }
+        }*/
     }
 
     public void updateBoard() {

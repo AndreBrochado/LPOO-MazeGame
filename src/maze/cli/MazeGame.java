@@ -67,7 +67,7 @@ public class MazeGame {
 
         GameObject[] objects = {empty, wall, sword, exit};
         GameCharacter[] characters = {hero, dragon};
-        return new Board(10, 10, objects, characters);
+        return new Board(10, objects, characters);
     }
 
     //this function implement the gameplay

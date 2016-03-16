@@ -13,7 +13,7 @@ public class MazeBuilder implements IMazeBuilder {
     private Random generator;
     private GameObject[][] maze;
     private Coordinate guideCell, visitedGuideCell;
-    private GameObject exit, empty, wall;
+    private GameObject exit;
     private int visitedCellsSize;
     private boolean[][] visitedCells;
     private Stack<Coordinate> pathHistory;
@@ -30,10 +30,6 @@ public class MazeBuilder implements IMazeBuilder {
         createGuideCell();
 
         createVisitedCellsArray();
-
-        char[] wallReps = {'X', ' '};
-        wall = new GameObject(-1, -1, wallReps, true, false);
-        empty = new GameObject();
 
         pathHistory = new Stack<Coordinate>();
     }
@@ -122,22 +118,22 @@ public class MazeBuilder implements IMazeBuilder {
             case 0: //left
                 newPos.setX(visitedGuideCell.getX() - 1);
                 newPos.setY(visitedGuideCell.getY());
-                maze[guideCell.getY()][guideCell.getX() - 1] = empty;
+                maze[guideCell.getY()][guideCell.getX() - 1] = Board.empty;
                 break;
             case 1: //right
                 newPos.setX(visitedGuideCell.getX() + 1);
                 newPos.setY(visitedGuideCell.getY());
-                maze[guideCell.getY()][guideCell.getX() + 1] = empty;
+                maze[guideCell.getY()][guideCell.getX() + 1] = Board.empty;
                 break;
             case 2: //down
                 newPos.setX(visitedGuideCell.getX());
                 newPos.setY(visitedGuideCell.getY() - 1);
-                maze[guideCell.getY() - 1][guideCell.getX()] = empty;
+                maze[guideCell.getY() - 1][guideCell.getX()] = Board.empty;
                 break;
             case 3: //up
                 newPos.setX(visitedGuideCell.getX());
                 newPos.setY(visitedGuideCell.getY() + 1);
-                maze[guideCell.getY() + 1][guideCell.getX()] = empty;
+                maze[guideCell.getY() + 1][guideCell.getX()] = Board.empty;
                 break;
         }
         visitedCells[newPos.getY()][newPos.getX()] = true;
@@ -162,11 +158,11 @@ public class MazeBuilder implements IMazeBuilder {
 
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
-                maze[i][j] = wall;
+                maze[i][j] = Board.wall;
 
         for (int i = 1; i < size; i += 2)
             for (int j = 1; j < size; j += 2)
-                maze[i][j] = empty;
+                maze[i][j] = Board.empty;
 
         maze[exit.getY()][exit.getX()] = exit;
 
@@ -198,10 +194,10 @@ public class MazeBuilder implements IMazeBuilder {
     }
 
     public static void main(String[] args) {
-        MazeBuilder mb = new MazeBuilder();
+        /*MazeBuilder mb = new MazeBuilder();
         GameObject[][] board = mb.buildMaze(21);
         Board b = new Board(21, 21);
         b.setBoard(board);
-        b.print();
+        b.print();*/
     }
 }

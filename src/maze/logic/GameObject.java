@@ -1,5 +1,7 @@
 package maze.logic;
 
+import java.util.Arrays;
+
 /**
  * Created by Andre on 27/02/2016.
  */
@@ -60,5 +62,16 @@ public class GameObject {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameObject that = (GameObject) o;
+
+        return Arrays.equals(representations, that.representations);
+
     }
 }
