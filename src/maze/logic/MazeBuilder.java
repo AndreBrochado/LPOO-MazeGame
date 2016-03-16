@@ -9,6 +9,7 @@ import java.util.Stack;
 
 public class MazeBuilder implements IMazeBuilder {
 
+    //TODO REPLACE GAME OBJECTS WITH STATIC FROM BOARD
     private int mazeSize;
     private Random generator;
     private GameObject[][] maze;
@@ -150,7 +151,50 @@ public class MazeBuilder implements IMazeBuilder {
         return true;
     }
 
+    public void addObject(GameObject object){
+        Coordinate pos = new Coordinate(0, 0);
+
+        while(!maze[pos.getY()][pos.getX()].equals(Board.empty)){
+            pos.setX(generator.nextInt(mazeSize-1)+1);
+            pos.setY(generator.nextInt(mazeSize-1)+1);
+        }
+
+        maze[pos.getY()][pos.getX()] = object;
+        object.setX(pos.getX());
+        object.setY(pos.getY());
+    }
+
+    public boolean isAdjacentToHero(Coordinate pos) {
+        for(int dx = -1; dx <= 1; dx++){
+            for(int dy = -1; dy <= 1; dy++){
+                try {
+                    if (maze[pos.getY() + dy][pos.getX() + dx].equals(Board.hero))
+                        return true;
+                }
+                catch(ArrayIndexOutOfBoundsException ignore){}
+            }
+        }
+        return false;
+    }
+
+    public void addDragon(GameObject dragon){
+        Coordinate pos = new Coordinate(0, 0);
+
+        while(!maze[pos.getY()][pos.getX()].equals(Board.empty) || isAdjacentToHero(pos)){
+            pos.setX(generator.nextInt(mazeSize-1)+1);
+            pos.setY(generator.nextInt(mazeSize-1)+1);
+        }
+
+        maze[pos.getY()][pos.getX()] = dragon;
+        dragon.setX(pos.getX());
+        dragon.setY(pos.getY());
+    }
+
     public GameObject[][] buildMaze(int size) throws IllegalArgumentException {
+        return buildMaze(size, 1);
+    }
+
+    public GameObject[][] buildMaze(int size, int numDragons) throws IllegalArgumentException {
         if (size <= 3 || size % 2 == 0)
             throw new IllegalArgumentException();
 
@@ -190,6 +234,11 @@ public class MazeBuilder implements IMazeBuilder {
                 direction = generator.nextInt(4);
             moveGuideCell(direction);
         }
+
+        addObject(Board.hero);
+        addObject(Board.sword);
+        for(int i = 0; i < numDragons; i++)
+            addDragon(Board.dragon);
         return maze;
     }
 

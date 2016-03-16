@@ -138,11 +138,11 @@ public class TestMazeBuilder {
             assertTrue("Invalid diagonals in maze:\n" + m, ! hasSquare(m, badDiagonalDown));
             assertTrue("Invalid diagonals in maze:\n" + m, ! hasSquare(m, badDiagonalUp));
             assertTrue("Maze exit not reachable in maze:\n" + m, checkExitReachable(m));
-            assertNotNull("Missing exit in maze:\n" + m, findPos(m, new GameObject(0, 0, new char[]{'S', ' '})));
-            assertNotNull("Missing hero in maze:\n" + m, findPos(m, new GameCharacter(0, 0, new char[]{'H', ' '})));
-            assertNotNull("Missing dragon in maze:\n" + m, findPos(m, new GameCharacter(0, 0, new char[]{'D', ' '})));
-            assertNotNull("Missing sword in maze:\n" + m, findPos(m, new GameObject(0, 0, new char[]{'E', ' '})));
-            assertFalse("Adjacent hero and dragon in maze:\n" + b, findPos(m, new GameCharacter(0, 0, new char[]{'H', ' '})).adjacentTo(findPos(m, new GameCharacter(0, 0, new char[]{'D', ' '}))));
+            assertNotNull("Missing exit in maze:\n" + m, findPos(m, Board.exit));
+            assertNotNull("Missing hero in maze:\n" + m, findPos(m, Board.hero));
+            assertNotNull("Missing dragon in maze:\n" + m, findPos(m, Board.dragon));
+            assertNotNull("Missing sword in maze:\n" + m, findPos(m, Board.sword));
+            assertFalse("Adjacent hero and dragon in maze:\n" + b, findPos(m, Board.hero).adjacentTo(findPos(m, Board.dragon)));
         }
     }
 

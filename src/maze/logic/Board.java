@@ -8,7 +8,12 @@ import java.util.Random;
  */
 public class Board {
 
-    public static final GameObject empty = new GameObject(), wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
+    public static final GameObject empty = new GameObject();
+    public static final GameObject wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
+    public static final GameObject sword = new GameObject(-1, -1, new char[]{'E', ' '}, false, true);
+    public static final GameObject exit = new GameObject(-1, -1, new char[]{'S', ' '});
+    public static final GameObject hero = new GameCharacter(-1, -1, new char[]{'H', ' ', 'A'});
+    public static final GameObject dragon = new GameCharacter(-1, -1, new char[]{'D', ' ', 'F', 'd'});
 
     private int height, width;
     private GameObject[][] board;
