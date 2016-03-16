@@ -1,5 +1,6 @@
 package maze.logic;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
@@ -13,11 +14,16 @@ public class MazeBuilder implements IMazeBuilder {
     private int mazeSize;
     private Random generator;
     private GameObject[][] maze;
+
     private Coordinate guideCell, visitedGuideCell;
-    private GameObject exit;
     private int visitedCellsSize;
     private boolean[][] visitedCells;
     private Stack<Coordinate> pathHistory;
+
+    //board preparation variables
+    private GameCharacter hero;
+    private ArrayList<GameCharacter> dragons;
+    private GameObject empty, wall, sword, exit;
 
     private void initializeValues(int mazeSize) {
         this.mazeSize = mazeSize;
@@ -25,6 +31,10 @@ public class MazeBuilder implements IMazeBuilder {
         generator = new Random();
 
         maze = new GameObject[mazeSize][mazeSize];
+
+        this.empty = new GameObject();
+        this.wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
+        this.sword = new GameObject(-1, -1, new char[]{'E', ' '}, false, true);
 
         createExit();
 
@@ -53,10 +63,9 @@ public class MazeBuilder implements IMazeBuilder {
         }
     }
 
-    //creat the exit on an odd coordinate
+    //create the exit on an odd coordinate
     private void createExit() {
-        char[] exitReps = {'S', ' '};
-        exit = new GameObject(-1, -1, exitReps);
+        this.exit = new GameObject(-1, -1, new char[] {'S', ' '});
 
         int cornerDistance = 0;
         while (cornerDistance % 2 == 0)
@@ -119,22 +128,22 @@ public class MazeBuilder implements IMazeBuilder {
             case 0: //left
                 newPos.setX(visitedGuideCell.getX() - 1);
                 newPos.setY(visitedGuideCell.getY());
-                maze[guideCell.getY()][guideCell.getX() - 1] = Board.empty;
+                maze[guideCell.getY()][guideCell.getX() - 1] = this.empty;
                 break;
             case 1: //right
                 newPos.setX(visitedGuideCell.getX() + 1);
                 newPos.setY(visitedGuideCell.getY());
-                maze[guideCell.getY()][guideCell.getX() + 1] = Board.empty;
+                maze[guideCell.getY()][guideCell.getX() + 1] = this.empty;
                 break;
             case 2: //down
                 newPos.setX(visitedGuideCell.getX());
                 newPos.setY(visitedGuideCell.getY() - 1);
-                maze[guideCell.getY() - 1][guideCell.getX()] = Board.empty;
+                maze[guideCell.getY() - 1][guideCell.getX()] = this.empty;
                 break;
             case 3: //up
                 newPos.setX(visitedGuideCell.getX());
                 newPos.setY(visitedGuideCell.getY() + 1);
-                maze[guideCell.getY() + 1][guideCell.getX()] = Board.empty;
+                maze[guideCell.getY() + 1][guideCell.getX()] = this.empty;
                 break;
         }
         visitedCells[newPos.getY()][newPos.getX()] = true;
@@ -154,7 +163,7 @@ public class MazeBuilder implements IMazeBuilder {
     public void addObject(GameObject object){
         Coordinate pos = new Coordinate(0, 0);
 
-        while(!maze[pos.getY()][pos.getX()].equals(Board.empty)){
+        while(!maze[pos.getY()][pos.getX()].equals(this.empty)){
             pos.setX(generator.nextInt(mazeSize-1)+1);
             pos.setY(generator.nextInt(mazeSize-1)+1);
         }
@@ -180,7 +189,7 @@ public class MazeBuilder implements IMazeBuilder {
     public void addDragon(GameObject dragon){
         Coordinate pos = new Coordinate(0, 0);
 
-        while(!maze[pos.getY()][pos.getX()].equals(Board.empty) || isAdjacentToHero(pos)){
+        while(!maze[pos.getY()][pos.getX()].equals(this.empty) || isAdjacentToHero(pos)){
             pos.setX(generator.nextInt(mazeSize-1)+1);
             pos.setY(generator.nextInt(mazeSize-1)+1);
         }
@@ -202,11 +211,11 @@ public class MazeBuilder implements IMazeBuilder {
 
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
-                maze[i][j] = Board.wall;
+                maze[i][j] = this.wall;
 
         for (int i = 1; i < size; i += 2)
             for (int j = 1; j < size; j += 2)
-                maze[i][j] = Board.empty;
+                maze[i][j] = this.empty;
 
         maze[exit.getY()][exit.getX()] = exit;
 

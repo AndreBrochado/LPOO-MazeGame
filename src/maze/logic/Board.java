@@ -15,25 +15,24 @@ public class Board {
     public static final GameObject hero = new GameCharacter(-1, -1, new char[]{'H', ' ', 'A'});
     public static final GameObject dragon = new GameCharacter(-1, -1, new char[]{'D', ' ', 'F', 'd'});
 
-    private int height, width;
+    private int size;
     private GameObject[][] board;
     private GameObject[] objects;
     private GameCharacter[] characters;
 
     //base constructor
     public Board(int size) {
-        this.height = size;
-        this.width = size;
+        this.size = size;
         MazeBuilder builder = new MazeBuilder();
         this.board = builder.buildMaze(size);
         this.objects = new GameObject[2];
-        objects[0] = empty;
-        objects[1] = wall;
+        //objects[0] = empty;
+        //objects[1] = wall;
         this.characters = new GameCharacter[0];
     }
 
     //complex constructor
-    public Board(int size, GameObject[] objects, GameCharacter[] characters) {
+    public Board(int size, int numDragons) {
         this(size);
         this.objects = new GameObject[objects.length];
         System.arraycopy(objects, 0, this.objects, 0, objects.length);
