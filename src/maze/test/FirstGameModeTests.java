@@ -35,7 +35,7 @@ public class FirstGameModeTests {
         char[] exitReps = {'S', ' '};
         exit = new GameObject(0, 0, exitReps);
     }*/
-
+/*
     @Test
     public void testMoveHeroToFreeCell() {
         MazeGame game = new MazeGame();
@@ -142,5 +142,5 @@ public class FirstGameModeTests {
         b.updateBoard();
         b.moveHero('D');
         assertEquals(0, b.getBoardState()); //state 0 equals to normal state board
-    }
+    }*/
 }

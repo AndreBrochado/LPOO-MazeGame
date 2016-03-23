@@ -1,5 +1,6 @@
 package maze.cli;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import maze.logic.Board;
 import maze.logic.GameCharacter;
 import maze.logic.GameObject;
@@ -13,14 +14,14 @@ import java.util.Scanner;
 
 public class MazeGame {
 
-    //read inputReader and return the char
+    //reads a char from the user and returns it
     private char inputReader() {
         Scanner reader = new Scanner(System.in);
         char c = reader.next().charAt(0);
         return c;
     }
 
-    //output function and allow to print all menus
+    //outputs menus given an array of choices
     private void displayMenu(String[] s) {
         for (int i = 0; i < s.length; i++) {
             System.out.println((i + 1) + ". " + s[i]);
@@ -28,7 +29,7 @@ public class MazeGame {
         System.out.print("Insert your choice: ");
     }
 
-    //read inputReader and return the int
+    //reads a number from the user between min and max and returns it
     private int askForUserInput(int min, int max) {
 
         int choice = 0;
@@ -46,35 +47,20 @@ public class MazeGame {
         return choice;
     }
 
-    //creates all the necessary GameObject to the board
-    public Board prepareGameBoard() {
-        GameObject empty = new GameObject();
-
-        char[] wallReps = {'X', ' '};
-        GameObject wall = new GameObject(-1, -1, wallReps, true, false);
-
-        char[] swordReps = {'E', ' '};
-        GameObject sword = new GameObject(1, 8, swordReps, false, true);
-
-        char[] heroReps = {'H', ' ', 'A'};
-        GameCharacter hero = new GameCharacter(1, 1, heroReps);
-
-        char[] dragonReps = {'D', ' ', 'F', 'd'};
-        GameCharacter dragon = new GameCharacter(1, 3, dragonReps);
-
-        char[] exitReps = {'S', ' '};
-        GameObject exit = new GameObject(9, 5, exitReps);
-
-        GameObject[] objects = {empty, wall, sword, exit};
-        GameCharacter[] characters = {hero, dragon};
-        //return new Board(10, objects, characters);
-        return null;
-    }
-
-    //this function implement the gameplay
+    //this function implements the game loop
     private boolean playGame(boolean dragonMoves, boolean dragonSleeps) {
-        Board gameBoard = prepareGameBoard();
-        gameBoard.updateBoard();
+        boolean validSize = false;
+        Board gameBoard = null;
+
+        while(!validSize) {
+            try {
+                System.out.print("Please insert board size: ");
+                int size = askForUserInput(5, 5000);
+                gameBoard = new Board(size);
+                validSize = true;
+            } catch (IllegalArgumentException ignore) {
+            }
+        }
 
         int boardState;
         do {
@@ -93,10 +79,10 @@ public class MazeGame {
         return boardState != 1;
     }
 
-    //allow the player to choose one of the 3 GameMode
+    //allows the player to choose one of the 3 Game Modes
     public void chooseGameMode() {
 
-        int choice;
+        int choice = 0;
 
         //TODO: replace while(true) to exit on 4
         while (true) {
@@ -124,6 +110,7 @@ public class MazeGame {
                 System.out.println("Congratulations! You won the game!");
             else
                 System.out.println("You lost the game!");
+            System.out.println("Do you want to play again? Choose your game mode or exit");
         }
 
     }

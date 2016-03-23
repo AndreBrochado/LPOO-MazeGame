@@ -8,13 +8,6 @@ import java.util.Random;
  */
 public class Board {
 
-    public static final GameObject empty = new GameObject();
-    public static final GameObject wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
-    public static final GameObject sword = new GameObject(-1, -1, new char[]{'E', ' '}, false, true);
-    public static final GameObject exit = new GameObject(-1, -1, new char[]{'S', ' '});
-    public static final GameObject hero = new GameCharacter(-1, -1, new char[]{'H', ' ', 'A'});
-    public static final GameObject dragon = new GameCharacter(-1, -1, new char[]{'D', ' ', 'F', 'd'});
-
     private int size;
     private GameObject[][] board;
     private GameObject[] objects;
@@ -23,45 +16,25 @@ public class Board {
     //base constructor
     public Board(int size) {
         this.size = size;
+
         MazeBuilder builder = new MazeBuilder();
         this.board = builder.buildMaze(size);
-        this.objects = new GameObject[2];
-        //objects[0] = empty;
-        //objects[1] = wall;
-        this.characters = new GameCharacter[0];
+        this.objects = builder.getGameObjects();
+        this.characters = builder.getGameCharacters();
     }
-
-    //complex constructor
-    public Board(int size, int numDragons) {
-        this(size);
-        this.objects = new GameObject[objects.length];
-        System.arraycopy(objects, 0, this.objects, 0, objects.length);
-        this.characters = new GameCharacter[characters.length];
-        System.arraycopy(characters, 0, this.characters, 0, characters.length);
-    }
-
-    /*public void addObject(GameObject object){
-        this.objects = Arrays.copyOf(this.objects, this.objects.length+1);
-        this.objects[this.objects.length-1] = object;
-    }*/
 
     //update the board with the position of all GameObjects
-    public void updateBoard(boolean hasWalls) {
-        /*for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (
+    public void updateBoard() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(!Arrays.asList(this.objects).contains(board[j][i]))
+                    board[j][i] = getEmpty();
             }
         }
-        for (int i = 2; i < objects.length; i++)
-            board[objects[i].getY()][objects[i].getX()] = objects[i];
-        for (GameCharacter character : characters) {
-            if (character.state != GameCharacter.INVISIBLE)
-                board[character.getY()][character.getX()] = character;
-        }*/
-    }
-
-    public void updateBoard() {
-        this.updateBoard(true);
+        for (GameCharacter c : characters){
+            if(c.state != GameCharacter.DEAD)
+                board[c.getY()][c.getX()] = c;
+        }
     }
 
     //print on the screen the board
@@ -91,7 +64,7 @@ public class Board {
 
     //move a GameCharacter if possible on horizontal (-1 or 1 in deltax) or in vertical (-1 or 1 in deltay)
     private void moveActions(GameCharacter character, int deltax, int deltay) {
-        if (board[character.getY() + deltay][character.getX() + deltax].impassable == false) {
+        if (board[character.getY() + deltay][character.getX() + deltax].impassable == false && !(board[character.getY()+deltay][character.getX()+deltax].equals(getExit()) && !allDragonsDead())) {
             if (character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
                 character.state = GameCharacter.VISIBLE;
                 board[character.getY() + deltay][character.getX() + deltax].state = GameObject.VISIBLE;
@@ -189,18 +162,21 @@ public class Board {
         return null;
     }
 
-    public int getBoardState() {
-        if (characters[0].state == GameCharacter.DEAD)
-            return 1;
-
-        boolean dragonsDead = true;
+    private boolean allDragonsDead(){
         for (int i = 1; i < characters.length; i++) {
             if (characters[i].state != GameCharacter.DEAD)
-                dragonsDead = false;
+                return false;
         }
+        return true;
+    }
+
+    public int getBoardState() {
+        if (getHero().state == GameCharacter.DEAD)
+            return 1;
 
         GameObject exit = getExit();
-        if (dragonsDead && characters[0].getX() == exit.getX() && characters[0].getY() == exit.getY())
+        //TODO:replace getx and gety by position.equals
+        if (allDragonsDead() && getHero().getX() == exit.getX() && getHero().getY() == exit.getY())
             return 2;
 
         return 0;
@@ -212,6 +188,18 @@ public class Board {
 
     public void setBoard(GameObject[][] board) {
         this.board = board;
+    }
+
+    public GameObject getEmpty() {
+        return this.objects[0];
+    }
+
+    public GameObject getWall() {
+        return this.objects[1];
+    }
+
+    public GameCharacter getHero() {
+        return this.characters[0];
     }
 }
 

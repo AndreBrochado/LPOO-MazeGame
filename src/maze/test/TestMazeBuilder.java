@@ -8,6 +8,14 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class TestMazeBuilder {
+
+    private GameObject wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
+    private GameObject empty = new GameObject();
+    private GameObject sword = new GameObject(-1, -1, new char[]{'E', ' '}, false, true);
+    private GameObject exit = new GameObject(-1, -1, new char[] {'S', ' '});
+    private GameCharacter hero = new GameCharacter(-1, -1, new char[]{'H', ' ', 'A'});
+    private GameCharacter dragon = new GameCharacter(-1, -1, new char[]{'D', ' ', 'F', 'd'});
+
     // Auxiliary class
     public static class Point {
         private int x, y;
@@ -43,7 +51,7 @@ public class TestMazeBuilder {
                             return false;
                         else
                             countExit++;
-                    else if (!m[i][j].equals(Board.wall))
+                    else if (!m[i][j].equals(wall))
                         return false;
         return countExit == 1;
     }
@@ -84,7 +92,7 @@ public class TestMazeBuilder {
 
         for (int i = 0; i < maze.length; i++)
             for (int j = 0; j < maze.length; j++)
-                if (!maze[i][j].equals(Board.wall) && ! visited[i][j] )
+                if (!maze[i][j].equals(wall) && ! visited[i][j] )
                     return false;
 
         return true;
@@ -95,7 +103,7 @@ public class TestMazeBuilder {
     private void visit(GameObject[][] m, int i, int j, boolean [][] visited) {
         if (i < 0 || i >= m.length || j < 0 || j >= m.length)
             return;
-        if (m[i][j].equals(Board.wall) || visited[i][j])
+        if (m[i][j].equals(wall) || visited[i][j])
             return;
         visited[i][j] = true;
         visit(m, i-1, j, visited);
@@ -111,19 +119,20 @@ public class TestMazeBuilder {
         int minMazeSize = 5;
 
         IMazeBuilder builder = new MazeBuilder();
+
         GameObject[][] badWalls = {
-                {Board.wall, Board.wall, Board.wall},
-                {Board.wall, Board.wall, Board.wall},
-                {Board.wall, Board.wall, Board.wall}};
+                {wall, wall, wall},
+                {wall, wall, wall},
+                {wall, wall, wall}};
         GameObject[][] badSpaces = {
-                {Board.empty, Board.empty},
-                {Board.empty, Board.empty}};
+                {empty, empty},
+                {empty, empty}};
         GameObject[][] badDiagonalDown = {
-                {Board.wall, Board.empty},
-                {Board.empty, Board.wall}};
+                {wall, empty},
+                {empty, wall}};
         GameObject[][] badDiagonalUp = {
-                {Board.empty, Board.wall},
-                {Board.wall, Board.empty}};
+                {empty, wall},
+                {wall, empty}};
 
         Random rand = new Random();
 
@@ -138,11 +147,11 @@ public class TestMazeBuilder {
             assertTrue("Invalid diagonals in maze:\n" + m, ! hasSquare(m, badDiagonalDown));
             assertTrue("Invalid diagonals in maze:\n" + m, ! hasSquare(m, badDiagonalUp));
             assertTrue("Maze exit not reachable in maze:\n" + m, checkExitReachable(m));
-            assertNotNull("Missing exit in maze:\n" + m, findPos(m, Board.exit));
-            assertNotNull("Missing hero in maze:\n" + m, findPos(m, Board.hero));
-            assertNotNull("Missing dragon in maze:\n" + m, findPos(m, Board.dragon));
-            assertNotNull("Missing sword in maze:\n" + m, findPos(m, Board.sword));
-            assertFalse("Adjacent hero and dragon in maze:\n" + b, findPos(m, Board.hero).adjacentTo(findPos(m, Board.dragon)));
+            assertNotNull("Missing exit in maze:\n" + m, findPos(m, exit));
+            assertNotNull("Missing hero in maze:\n" + m, findPos(m, hero));
+            assertNotNull("Missing dragon in maze:\n" + m, findPos(m, dragon));
+            assertNotNull("Missing sword in maze:\n" + m, findPos(m, sword));
+            assertFalse("Adjacent hero and dragon in maze:\n" + b, findPos(m, hero).adjacentTo(findPos(m, dragon)));
         }
     }
 

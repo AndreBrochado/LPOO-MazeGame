@@ -10,7 +10,8 @@ import java.util.Stack;
 
 public class MazeBuilder implements IMazeBuilder {
 
-    //TODO REPLACE GAME OBJECTS WITH STATIC FROM BOARD
+    private final int noObjects = 4;
+
     private int mazeSize;
     private Random generator;
     private GameObject[][] maze;
@@ -22,19 +23,25 @@ public class MazeBuilder implements IMazeBuilder {
 
     //board preparation variables
     private GameCharacter hero;
-    private ArrayList<GameCharacter> dragons;
+    private GameCharacter[] dragons;
     private GameObject empty, wall, sword, exit;
 
-    private void initializeValues(int mazeSize) {
-        this.mazeSize = mazeSize;
-
-        generator = new Random();
-
-        maze = new GameObject[mazeSize][mazeSize];
-
+    public MazeBuilder(){
+        this.generator = new Random();
         this.empty = new GameObject();
         this.wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
         this.sword = new GameObject(-1, -1, new char[]{'E', ' '}, false, true);
+        this.exit = new GameObject(-1, -1, new char[] {'S', ' '});
+        this.hero = new GameCharacter(-1, -1, new char[]{'H', ' ', 'A'});
+    }
+
+    private void initializeValues(int mazeSize, int numDragons) {
+        this.mazeSize = mazeSize;
+
+        maze = new GameObject[mazeSize][mazeSize];
+
+        this.dragons = new GameCharacter[numDragons];
+        for (int i = 0; i < numDragons; i++) dragons[i] = new GameCharacter(-1, -1, new char[]{'D', ' ', 'F', 'd'});
 
         createExit();
 
@@ -65,8 +72,6 @@ public class MazeBuilder implements IMazeBuilder {
 
     //create the exit on an odd coordinate
     private void createExit() {
-        this.exit = new GameObject(-1, -1, new char[] {'S', ' '});
-
         int cornerDistance = 0;
         while (cornerDistance % 2 == 0)
             cornerDistance = generator.nextInt(mazeSize - 2) + 1;
@@ -86,7 +91,7 @@ public class MazeBuilder implements IMazeBuilder {
         }
     }
 
-    //creat a array with all visited cells
+    //create an array with all visited cells
     private void createVisitedCellsArray() {
         visitedCellsSize = (mazeSize - 1) / 2;
         visitedCells = new boolean[visitedCellsSize][visitedCellsSize];
@@ -177,7 +182,7 @@ public class MazeBuilder implements IMazeBuilder {
         for(int dx = -1; dx <= 1; dx++){
             for(int dy = -1; dy <= 1; dy++){
                 try {
-                    if (maze[pos.getY() + dy][pos.getX() + dx].equals(Board.hero))
+                    if (maze[pos.getY() + dy][pos.getX() + dx].equals(this.hero))
                         return true;
                 }
                 catch(ArrayIndexOutOfBoundsException ignore){}
@@ -207,7 +212,7 @@ public class MazeBuilder implements IMazeBuilder {
         if (size <= 3 || size % 2 == 0)
             throw new IllegalArgumentException();
 
-        initializeValues(size);
+        initializeValues(size, numDragons);
 
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
@@ -244,11 +249,51 @@ public class MazeBuilder implements IMazeBuilder {
             moveGuideCell(direction);
         }
 
-        addObject(Board.hero);
-        addObject(Board.sword);
+        addObject(this.hero);
+        addObject(this.sword);
         for(int i = 0; i < numDragons; i++)
-            addDragon(Board.dragon);
+            addDragon(dragons[i]);
         return maze;
+    }
+
+    public GameObject getExit() {
+        return exit;
+    }
+
+    public GameObject getSword() {
+        return sword;
+    }
+
+    public GameObject getWall() {
+        return wall;
+    }
+
+    public GameObject getEmpty() {
+        return empty;
+    }
+
+    public GameCharacter[] getDragons() {
+        return dragons;
+    }
+
+    public GameCharacter getHero() {
+        return hero;
+    }
+
+    public GameObject[] getGameObjects(){
+        GameObject[] objects = new GameObject[noObjects];
+        objects[0] = empty;
+        objects[1] = wall;
+        objects[2] = sword;
+        objects[3] = exit;
+        return objects;
+    }
+
+    public GameCharacter[] getGameCharacters(){
+        GameCharacter[] characters = new GameCharacter[dragons.length+1];
+        characters[0] = hero;
+        System.arraycopy(dragons, 0, characters, 1, dragons.length);
+        return characters;
     }
 
     public static void main(String[] args) {
