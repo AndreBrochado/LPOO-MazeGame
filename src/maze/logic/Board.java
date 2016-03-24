@@ -13,6 +13,11 @@ public class Board {
     private GameObject[] objects;
     private GameCharacter[] characters;
 
+    //test mode constructor
+    public Board(GameObject[][] board){
+        this.board = board;
+    }
+
     //base constructor
     public Board(int size) {
         this.size = size;
@@ -97,7 +102,7 @@ public class Board {
             default:
                 return;
         }
-        moveActions(characters[0], deltax, deltay);
+        moveActions(getHero(), deltax, deltay);
     }
 
     //this funciont move the dragon on a random direction
@@ -154,14 +159,6 @@ public class Board {
         return board;
     }
 
-    private GameObject getExit() {
-        for (GameObject obj : objects)
-            if (obj.representations[0] == 'S') {
-                return obj;
-            }
-        return null;
-    }
-
     private boolean allDragonsDead(){
         for (int i = 1; i < characters.length; i++) {
             if (characters[i].state != GameCharacter.DEAD)
@@ -198,8 +195,20 @@ public class Board {
         return this.objects[1];
     }
 
+    private GameObject getExit() {
+        return this.objects[3];
+    }
+
     public GameCharacter getHero() {
         return this.characters[0];
+    }
+
+    public void setObjects(GameObject[] objects) {
+        this.objects = objects;
+    }
+
+    public void setCharacters(GameCharacter[] characters) {
+        this.characters = characters;
     }
 }
 

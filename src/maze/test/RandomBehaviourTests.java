@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
  */
 public class RandomBehaviourTests {
 
-   /* @Test(timeout = 2500)
+    /*@Test(timeout = 2500)
     public void testRandomMovement() {
         MazeGame game = new MazeGame();
         Board b = game.prepareGameBoard();

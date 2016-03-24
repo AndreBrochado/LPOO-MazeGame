@@ -16,7 +16,7 @@ public class FirstGameModeTests {
     //GameObject empty, wall, sword, exit;
     //GameCharacter hero, dragon;
 
-    /*public JUnit4(){
+   /* public JUnit4(){
 
         empty = new GameObject();
 
@@ -35,112 +35,112 @@ public class FirstGameModeTests {
         char[] exitReps = {'S', ' '};
         exit = new GameObject(0, 0, exitReps);
     }*/
-/*
+    GameObject empty = new GameObject();
+    GameObject wall = new GameObject(-1,-1, new char[]{'X', ' '}, true, false);
+    GameObject exit = new GameObject(3, 4, new char[] {'S', ' '});
+    GameObject sword = new GameObject(3, 2, new char[]{'E', ' '}, false, true);
+    GameCharacter hero = new GameCharacter(3, 3, new char[]{'H', ' ', 'A'});
+    GameCharacter dragon = new GameCharacter(1, 2, new char[]{'D', ' ', 'F', 'd'});
+
+    GameObject[][] testMaze = {
+            {wall, wall, wall, wall, wall},
+            {wall, empty, empty, empty, wall},
+            {wall, dragon, empty, sword, wall},
+            {wall, empty, empty, hero, wall},
+            {wall, wall, wall, exit, wall}
+    };
+
+    private Board prepareTestBoard(){
+        Board b = new Board(testMaze);
+        b.setObjects(new GameObject[]{empty, wall, sword, exit});
+        b.setCharacters(new GameCharacter[]{hero, dragon});
+        return b;
+    }
+
     @Test
     public void testMoveHeroToFreeCell() {
-        MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        b.updateBoard();
-        GameCharacter hero = b.getCharacters()[0];
+        Board b = prepareTestBoard();
 
-        assertEquals(1, hero.getX());
-        assertEquals(1, hero.getY());
+        assertEquals(3, hero.getX());
+        assertEquals(3, hero.getY());
 
-        b.moveHero('D');
+        b.moveHero('A');
         assertEquals(2, hero.getX());
-        assertEquals(1, hero.getY());
+        assertEquals(3, hero.getY());
     }
 
     @Test
     public void testMoveHeroToWall() {
-        MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        b.updateBoard();
+        Board b = prepareTestBoard();
 
-        GameCharacter hero = b.getCharacters()[0];
+        assertEquals(3, hero.getX());
+        assertEquals(3, hero.getY());
 
-        assertEquals(1, hero.getX());
-        assertEquals(1, hero.getY());
-
-        b.moveHero('A');
-        assertEquals(1, hero.getX());
-        assertEquals(1, hero.getY());
+        b.moveHero('D');
+        assertEquals(3, hero.getX());
+        assertEquals(3, hero.getY());
     }
 
     @Test
     public void testHeroEquipSword() {
-        MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        GameCharacter hero = b.getCharacters()[0];
-        hero.setY(7);
-        b.updateBoard();
+        Board b = prepareTestBoard();
 
-        b.moveHero('S');
+        b.moveHero('W');
+
         assertEquals(2, hero.getState()); //state 2 equals to hero armed
     }
 
+
     @Test
     public void testHeroDeath() {
-        MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        GameCharacter hero = b.getCharacters()[0];
-        b.updateBoard();
+        Board b = prepareTestBoard();
 
-        b.moveHero('S');
+        b.moveHero('A');
         assertEquals(1, hero.getState()); //state 1 equals to hero dead
     }
 
+
     @Test
     public void testArmedHeroKillDragon() {
-        MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        GameCharacter hero = b.getCharacters()[0];
-        GameCharacter dragon = b.getCharacters()[1];
-        hero.setState(2); //Hero get armed
-        b.updateBoard();
+        Board b = prepareTestBoard();
 
-        b.moveHero('S');
+        hero.setState(2); //Hero get armed
+
+        b.moveHero('A');
         assertEquals(1, dragon.getState()); //state 1 equals to dragon dead
     }
 
     @Test
     public void testHeroWin() {
-        MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        GameCharacter hero = b.getCharacters()[0];
-        GameCharacter dragon = b.getCharacters()[1];
-        dragon.setState(1); //dragon get dead
-        hero.setX(8);
-        hero.setY(5); //hero is next to exit
+        Board b = prepareTestBoard();
 
-        b.updateBoard();
+        dragon.setState(1); //dragon is dead
 
-        b.moveHero('D');
+        b.moveHero('S'); //hero moves to exit
+
         assertEquals(2, b.getBoardState()); //state 2 equals to win
     }
 
     @Test
-    public void testHeroTryWinWithoutSword() {
-        MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        GameCharacter hero = b.getCharacters()[0];
-        hero.setX(8);
-        hero.setY(5);
-        b.updateBoard();
-        b.moveHero('D');
+    public void testHeroTryWinWithoutKilling() {
+        Board b = prepareTestBoard();
+
+        b.moveHero('S');
+
+        //TODO add assert equals hero same position (didnt move to exit)
         assertEquals(0, b.getBoardState()); //state 0 equals to normal state board
     }
 
+
     @Test
     public void testHeroTryWinWithSword() {
-        MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        GameCharacter hero = b.getCharacters()[0];
-        hero.setX(8);
-        hero.setY(5);
+        Board b = prepareTestBoard();
+
         hero.setState(2); //hero armed
-        b.updateBoard();
-        b.moveHero('D');
+
+        b.moveHero('S');
+
+        //TODO add assert equals hero same position (didnt move to exit)
         assertEquals(0, b.getBoardState()); //state 0 equals to normal state board
-    }*/
+    }
 }
