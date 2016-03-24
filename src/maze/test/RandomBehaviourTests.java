@@ -11,13 +11,13 @@ import static org.junit.Assert.*;
 /**
  * Created by Andre on 05/03/2016.
  */
-public class RandomBehaviourTests {
+public class RandomBehaviourTests extends TestEnvironment {
 
-    /*@Test(timeout = 2500)
+    @Test(timeout = 2500)
     public void testRandomMovement() {
         MazeGame game = new MazeGame();
-        Board b = game.prepareGameBoard();
-        b.updateBoard(false);
+        Board b = prepareTestBoard();
+
         GameCharacter dragon = b.getCharacters()[1];
         dragon.setX(5);
         dragon.setY(5);
@@ -34,5 +34,5 @@ public class RandomBehaviourTests {
                 yMovement = true;
         }
 
-    }*/
+    }
 }

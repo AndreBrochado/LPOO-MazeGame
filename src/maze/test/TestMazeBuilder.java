@@ -7,14 +7,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Random;
 
-public class TestMazeBuilder {
-
-    private GameObject wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
-    private GameObject empty = new GameObject();
-    private GameObject sword = new GameObject(-1, -1, new char[]{'E', ' '}, false, true);
-    private GameObject exit = new GameObject(-1, -1, new char[] {'S', ' '});
-    private GameCharacter hero = new GameCharacter(-1, -1, new char[]{'H', ' ', 'A'});
-    private GameCharacter dragon = new GameCharacter(-1, -1, new char[]{'D', ' ', 'F', 'd'});
+public class TestMazeBuilder extends TestEnvironment {
 
     // Auxiliary class
     public static class Point {
@@ -140,7 +133,6 @@ public class TestMazeBuilder {
             int size = maxMazeSize == minMazeSize? minMazeSize : minMazeSize + 2 * rand.nextInt((maxMazeSize - minMazeSize)/2);
             Board b = new Board(size);
             GameObject[][] m = b.getBoard();
-            m = builder.buildMaze(size);
             assertTrue("Invalid maze boundaries in maze:\n" + m, checkBoundaries(m));
             assertTrue("Invalid walls in maze:\n" + m, ! hasSquare(m, badWalls));
             assertTrue("Invalid spaces in maze:\n" + m, ! hasSquare(m, badSpaces));

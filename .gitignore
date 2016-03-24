@@ -47,6 +47,7 @@ hs_err_pid*
 
 # IntelliJ
 /out/
+/report/
 
 # IntellIJ Manually Added
 /.idea/

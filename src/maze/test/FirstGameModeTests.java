@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Vasco Ribeiro on 02/03/2016.
  */
-public class FirstGameModeTests {
+public class FirstGameModeTests extends TestEnvironment {
 
     //GameObject empty, wall, sword, exit;
     //GameCharacter hero, dragon;
@@ -35,27 +35,7 @@ public class FirstGameModeTests {
         char[] exitReps = {'S', ' '};
         exit = new GameObject(0, 0, exitReps);
     }*/
-    GameObject empty = new GameObject();
-    GameObject wall = new GameObject(-1,-1, new char[]{'X', ' '}, true, false);
-    GameObject exit = new GameObject(3, 4, new char[] {'S', ' '});
-    GameObject sword = new GameObject(3, 2, new char[]{'E', ' '}, false, true);
-    GameCharacter hero = new GameCharacter(3, 3, new char[]{'H', ' ', 'A'});
-    GameCharacter dragon = new GameCharacter(1, 2, new char[]{'D', ' ', 'F', 'd'});
 
-    GameObject[][] testMaze = {
-            {wall, wall, wall, wall, wall},
-            {wall, empty, empty, empty, wall},
-            {wall, dragon, empty, sword, wall},
-            {wall, empty, empty, hero, wall},
-            {wall, wall, wall, exit, wall}
-    };
-
-    private Board prepareTestBoard(){
-        Board b = new Board(testMaze);
-        b.setObjects(new GameObject[]{empty, wall, sword, exit});
-        b.setCharacters(new GameCharacter[]{hero, dragon});
-        return b;
-    }
 
     @Test
     public void testMoveHeroToFreeCell() {
