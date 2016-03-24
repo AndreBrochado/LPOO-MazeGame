@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class GameObject {
 
-    final static int VISIBLE = 0, INVISIBLE = 1, ASLEEP = 2;
+    final static int VISIBLE = 0, INVISIBLE = 1;
 
     protected Coordinate position;
     protected int state = 0;

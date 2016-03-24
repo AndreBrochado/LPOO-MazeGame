@@ -6,7 +6,7 @@ package maze.logic;
 
 public class GameCharacter extends GameObject {
 
-    final static int ARMED = 2, DEAD = 1;
+    final static int DEAD = 1, ARMED = 2, ASLEEP = 3;
 
     public GameCharacter(int x, int y, char[] representations) {
         super(x, y, representations, false, false);

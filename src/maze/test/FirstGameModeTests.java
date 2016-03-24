@@ -1,9 +1,7 @@
 package maze.test;
 
-import maze.cli.MazeGame;
 import maze.logic.Board;
-import maze.logic.GameCharacter;
-import maze.logic.GameObject;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,30 +10,6 @@ import static org.junit.Assert.*;
  * Created by Vasco Ribeiro on 02/03/2016.
  */
 public class FirstGameModeTests extends TestEnvironment {
-
-    //GameObject empty, wall, sword, exit;
-    //GameCharacter hero, dragon;
-
-   /* public JUnit4(){
-
-        empty = new GameObject();
-
-        char[] wallReps = {'X', ' '};
-        wall = new GameObject(-1, -1, wallReps, true, false);
-
-        char[] swordReps = {'E', ' '};
-        sword = new GameObject(0, 0, swordReps, false, true);
-
-        char[] heroReps = {'H', ' ', 'A'};
-        hero = new GameCharacter(0, 0, heroReps);
-
-        char[] dragonReps = {'D', ' ', 'F', 'd'};
-        dragon = new GameCharacter(0, 0, dragonReps);
-
-        char[] exitReps = {'S', ' '};
-        exit = new GameObject(0, 0, exitReps);
-    }*/
-
 
     @Test
     public void testMoveHeroToFreeCell() {
