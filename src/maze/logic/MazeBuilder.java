@@ -230,7 +230,7 @@ public class MazeBuilder implements IMazeBuilder {
 
         pathHistory.push(visitedGuideCell);
 
-        int direction = 0;
+        int direction = generator.nextInt(4);;
 
         while (!pathHistory.empty()) {
             while (isDeadEnd()) {
@@ -244,8 +244,9 @@ public class MazeBuilder implements IMazeBuilder {
             }
             if (pathHistory.empty())
                 break;
-            while (!validGuideCellMovement(direction, visitedGuideCell))
+            do {
                 direction = generator.nextInt(4);
+            }while (!validGuideCellMovement(direction, visitedGuideCell));
             moveGuideCell(direction);
         }
 
@@ -297,10 +298,7 @@ public class MazeBuilder implements IMazeBuilder {
     }
 
     public static void main(String[] args) {
-        /*MazeBuilder mb = new MazeBuilder();
-        GameObject[][] board = mb.buildMaze(21);
-        Board b = new Board(21, 21);
-        b.setBoard(board);
+        /*Board b = new Board(31);
         b.print();*/
     }
 }
