@@ -112,8 +112,6 @@ public class TestMazeBuilder extends TestEnvironment {
         int maxMazeSize = 101; // can change to any odd number >= 5
         int minMazeSize = 5;
 
-        IMazeBuilder builder = new MazeBuilder();
-
         GameObject[][] badWalls = {
                 {wall, wall, wall},
                 {wall, wall, wall},

@@ -59,9 +59,12 @@ public class MazeGame {
             try {
                 System.out.print("Please insert board size: ");
                 int size = askForUserInput(5, 5000);
-                gameBoard = new Board(size);
+                System.out.print("Please insert number of dragons (1 - " + size/2 + "): ");
+                int noDragons = askForUserInput(1, size/2);
+                gameBoard = new Board(size, noDragons);
                 validSize = true;
             } catch (IllegalArgumentException ignore) {
+                System.out.println("Board size must be odd!");
             }
         }
 
@@ -92,7 +95,7 @@ public class MazeGame {
 
             displayMenu(options);
             choice = askForUserInput(1, 4);
-            boolean playerWon = false;
+            boolean playerWon = false, playedGame = choice != 4;
 
             switch (choice) {
                 case 1:
@@ -105,11 +108,15 @@ public class MazeGame {
                     playerWon = playGame(true, true);
                     break;
             }
-            if (playerWon)
-                System.out.println("Congratulations! You won the game!");
-            else
-                System.out.println("You lost the game!");
-            System.out.println("Do you want to play again? Choose your game mode or exit");
+            if (playedGame) {
+                if (playerWon)
+                    System.out.println("Congratulations! You won the game!");
+                else {
+                    System.out.println("You lost the game!");
+                    System.out.println("Do you want to play again? Choose your game mode or exit");
+                }
+            } else
+                System.out.println("Ok :( Goodbye!");
         }
 
         System.exit(0);

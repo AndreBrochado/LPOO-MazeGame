@@ -18,12 +18,15 @@ public class Board {
         this.board = board;
     }
 
-    //base constructor
-    public Board(int size) {
+    public Board(int size){
+        this(size, 1);
+    }
+
+    public Board(int size, int noDragons) {
         this.size = size;
 
         MazeBuilder builder = new MazeBuilder();
-        this.board = builder.buildMaze(size);
+        this.board = builder.buildMaze(size, noDragons);
         this.objects = builder.getGameObjects();
         this.characters = builder.getGameCharacters();
     }
