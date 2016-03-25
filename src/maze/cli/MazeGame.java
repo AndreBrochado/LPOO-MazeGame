@@ -47,6 +47,10 @@ public class MazeGame {
         return choice;
     }
 
+    private void printBoard(Board b){
+        System.out.println(b);
+    }
+
     //this function implements the game loop
     private boolean playGame(boolean dragonMoves, boolean dragonSleeps) {
         boolean validSize = false;
@@ -64,7 +68,7 @@ public class MazeGame {
 
         int boardState;
         do {
-            gameBoard.print();
+            this.printBoard(gameBoard);
             System.out.print("Insert your movement choice (W - up, A - left, S - down, D - right: ");
             char input = inputReader();
             gameBoard.moveHero(input);

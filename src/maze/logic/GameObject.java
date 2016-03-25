@@ -64,6 +64,10 @@ public class GameObject {
         this.state = state;
     }
 
+    public Coordinate getPosition() {
+        return position;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

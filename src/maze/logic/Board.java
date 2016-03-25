@@ -43,14 +43,15 @@ public class Board {
     }
 
     //print on the screen the board
-    public void print() {
+    public String toString() {
+        String s="";
         for (GameObject[] line : board) {
             for (GameObject obj : line) {
-                System.out.print(obj.getRepresentation());
-                System.out.print(' ');
+                s = s + obj.getRepresentation() + ' ';
             }
-            System.out.print('\n');
+            s = s + '\n';
         }
+            return s;
     }
 
     //check if Hero is next to any Dragon and take account of combat consequences
@@ -171,16 +172,10 @@ public class Board {
         if (getHero().state == GameCharacter.DEAD)
             return 1;
 
-        GameObject exit = getExit();
-        //TODO:replace getx and gety by position.equals
-        if (allDragonsDead() && getHero().getX() == exit.getX() && getHero().getY() == exit.getY())
+        if (allDragonsDead() && getHero().getPosition().equals(getExit().getPosition()))
             return 2;
 
         return 0;
-    }
-
-    public GameCharacter[] getCharacters() {
-        return characters;
     }
 
     public void setBoard(GameObject[][] board) {
