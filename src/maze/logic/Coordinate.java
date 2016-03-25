@@ -8,11 +8,11 @@ package maze.logic;
 public class Coordinate {
     private int x, y;
 
-    public Coordinate(){
+    public Coordinate() {
         this(-1, -1);
     }
 
-    public Coordinate(int x, int y){
+    public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }

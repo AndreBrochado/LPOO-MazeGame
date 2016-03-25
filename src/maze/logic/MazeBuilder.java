@@ -25,12 +25,12 @@ public class MazeBuilder implements IMazeBuilder {
     private GameCharacter[] dragons;
     private GameObject empty, wall, sword, exit;
 
-    public MazeBuilder(){
+    public MazeBuilder() {
         this.generator = new Random();
         this.empty = new GameObject();
         this.wall = new GameObject(-1, -1, new char[]{'X', ' '}, true, false);
         this.sword = new GameObject(-1, -1, new char[]{'E', ' '}, false, true);
-        this.exit = new GameObject(-1, -1, new char[] {'S', ' '});
+        this.exit = new GameObject(-1, -1, new char[]{'S', ' '});
         this.hero = new GameCharacter(-1, -1, new char[]{'H', ' ', 'A'});
     }
 
@@ -63,7 +63,7 @@ public class MazeBuilder implements IMazeBuilder {
             guideCellY -= 1;
         }
         //convert to visited cell coordinate "pattern"
-        guideCell = new Coordinate((guideCellX - 1)/2, (guideCellY - 1)/2);
+        guideCell = new Coordinate((guideCellX - 1) / 2, (guideCellY - 1) / 2);
     }
 
     private void createExit() {
@@ -124,12 +124,12 @@ public class MazeBuilder implements IMazeBuilder {
             case 2: //down
                 newPos.setX(guideCell.getX());
                 newPos.setY(guideCell.getY() - 1);
-                maze[guideCell.getY() *2][guideCell.getX() *2 +1] = this.empty;
+                maze[guideCell.getY() * 2][guideCell.getX() * 2 + 1] = this.empty;
                 break;
             case 3: //up
                 newPos.setX(guideCell.getX());
                 newPos.setY(guideCell.getY() + 1);
-                maze[guideCell.getY() *2+2][guideCell.getX()*2+1] = this.empty;
+                maze[guideCell.getY() * 2 + 2][guideCell.getX() * 2 + 1] = this.empty;
                 break;
         }
         visitedCells[newPos.getY()][newPos.getX()] = true;
@@ -145,12 +145,12 @@ public class MazeBuilder implements IMazeBuilder {
         return true;
     }
 
-    public void addObject(GameObject object){
+    public void addObject(GameObject object) {
         Coordinate pos = new Coordinate(0, 0);
 
-        while(!maze[pos.getY()][pos.getX()].equals(this.empty)){
-            pos.setX(generator.nextInt(mazeSize-1)+1);
-            pos.setY(generator.nextInt(mazeSize-1)+1);
+        while (!maze[pos.getY()][pos.getX()].equals(this.empty)) {
+            pos.setX(generator.nextInt(mazeSize - 1) + 1);
+            pos.setY(generator.nextInt(mazeSize - 1) + 1);
         }
 
         maze[pos.getY()][pos.getX()] = object;
@@ -159,24 +159,24 @@ public class MazeBuilder implements IMazeBuilder {
     }
 
     public boolean isAdjacentToHero(Coordinate pos) {
-        for(int dx = -1; dx <= 1; dx++){
-            for(int dy = -1; dy <= 1; dy++){
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
                 try {
                     if (maze[pos.getY() + dy][pos.getX() + dx].equals(this.hero))
                         return true;
+                } catch (ArrayIndexOutOfBoundsException ignore) {
                 }
-                catch(ArrayIndexOutOfBoundsException ignore){}
             }
         }
         return false;
     }
 
-    public void addDragon(GameObject dragon){
+    public void addDragon(GameObject dragon) {
         Coordinate pos = new Coordinate(0, 0);
 
-        while(!maze[pos.getY()][pos.getX()].equals(this.empty) || isAdjacentToHero(pos)){
-            pos.setX(generator.nextInt(mazeSize-1)+1);
-            pos.setY(generator.nextInt(mazeSize-1)+1);
+        while (!maze[pos.getY()][pos.getX()].equals(this.empty) || isAdjacentToHero(pos)) {
+            pos.setX(generator.nextInt(mazeSize - 1) + 1);
+            pos.setY(generator.nextInt(mazeSize - 1) + 1);
         }
 
         maze[pos.getY()][pos.getX()] = dragon;
@@ -224,18 +224,18 @@ public class MazeBuilder implements IMazeBuilder {
                 break;
             do {
                 direction = generator.nextInt(4);
-            }while (!validGuideCellMovement(direction));
+            } while (!validGuideCellMovement(direction));
             moveGuideCell(direction);
         }
 
         addObject(this.hero);
         addObject(this.sword);
-        for(int i = 0; i < numDragons; i++)
+        for (int i = 0; i < numDragons; i++)
             addDragon(dragons[i]);
         return maze;
     }
 
-    public GameObject[] getGameObjects(){
+    public GameObject[] getGameObjects() {
         GameObject[] objects = new GameObject[noObjects];
         objects[0] = empty;
         objects[1] = wall;
@@ -244,8 +244,8 @@ public class MazeBuilder implements IMazeBuilder {
         return objects;
     }
 
-    public GameCharacter[] getGameCharacters(){
-        GameCharacter[] characters = new GameCharacter[dragons.length+1];
+    public GameCharacter[] getGameCharacters() {
+        GameCharacter[] characters = new GameCharacter[dragons.length + 1];
         characters[0] = hero;
         System.arraycopy(dragons, 0, characters, 1, dragons.length);
         return characters;

@@ -31,23 +31,22 @@ public class MazeGame {
 
     //reads a number from the user between min and max and returns it
     private int askForUserInput(int min, int max) {
-
         int choice = 0;
         boolean invalidInput = true;
-        while (invalidInput) {
 
+        while (invalidInput) {
             Scanner sc = new Scanner(System.in);
             choice = sc.nextInt();
-            if (choice <= max && choice >= min) {
+
+            if (choice <= max && choice >= min)
                 invalidInput = false;
-                break;
-            }
-            System.out.print("Invalid input, insert your choice: ");
+            if (invalidInput)
+                System.out.print("Invalid input, insert your choice: ");
         }
         return choice;
     }
 
-    private void printBoard(Board b){
+    private void printBoard(Board b) {
         System.out.println(b);
     }
 
@@ -56,7 +55,7 @@ public class MazeGame {
         boolean validSize = false;
         Board gameBoard = null;
 
-        while(!validSize) {
+        while (!validSize) {
             try {
                 System.out.print("Please insert board size: ");
                 int size = askForUserInput(5, 5000);
@@ -88,8 +87,7 @@ public class MazeGame {
 
         int choice = 0;
 
-        //TODO: replace while(true) to exit on 4
-        while (true) {
+        while (choice != 4) {
             String[] options = {"Immobile Dragon", "Dragon with random movement", "Dragon with random movement and rest", "Exit"};
 
             displayMenu(options);
@@ -106,9 +104,6 @@ public class MazeGame {
                 case 3:
                     playerWon = playGame(true, true);
                     break;
-                case 4:
-                    System.exit(0);
-
             }
             if (playerWon)
                 System.out.println("Congratulations! You won the game!");
@@ -117,28 +112,24 @@ public class MazeGame {
             System.out.println("Do you want to play again? Choose your game mode or exit");
         }
 
+        System.exit(0);
     }
 
     public static void main(String[] args) {
         MazeGame game = new MazeGame();
-        int choice;
+        int choice = 0;
 
-        //TODO: replace while(true) to exit on 2
-        while (true) {
+        do {
             String[] options = {"New Game", "Exit"};
 
             game.displayMenu(options);
 
             choice = game.askForUserInput(1, 2);
 
-            switch (choice) {
-                case 1:
-                    game.chooseGameMode();
-                    break;
-                case 2:
-                    System.exit(0);
-            }
-        }
-    }
+            game.chooseGameMode();
 
+        } while (choice != 2);
+
+        System.exit(0);
+    }
 }

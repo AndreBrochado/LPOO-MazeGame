@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import maze.logic.*;
 import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -33,14 +34,14 @@ public class TestMazeBuilder extends TestEnvironment {
 
     // a) the maze boundaries must have exactly one exit and everything else walls
     // b) the exit cannot be a corner
-    private boolean checkBoundaries(GameObject [][] m) {
+    private boolean checkBoundaries(GameObject[][] m) {
         int countExit = 0;
         int n = m.length;
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 if (i == 0 || j == 0 || i == n - 1 || j == n - 1)
                     if (m[i][j].equals(new GameObject(0, 0, new char[]{'S', ' '})))
-                        if ((i == 0 || i == n-1) && (j == 0 || j == n-1))
+                        if ((i == 0 || i == n - 1) && (j == 0 || j == n - 1))
                             return false;
                         else
                             countExit++;
@@ -59,7 +60,7 @@ public class TestMazeBuilder extends TestEnvironment {
                 boolean match = true;
                 for (int y = 0; y < square.length; y++)
                     for (int x = 0; x < square.length; x++) {
-                        if (!maze[i+y][j+x].equals(square[y][x]))
+                        if (!maze[i + y][j + x].equals(square[y][x]))
                             match = false;
                     }
                 if (match)
@@ -68,7 +69,7 @@ public class TestMazeBuilder extends TestEnvironment {
         return false;
     }
 
-    private Point findPos(GameObject [][] maze, GameObject c) {
+    private Point findPos(GameObject[][] maze, GameObject c) {
         for (int x = 0; x < maze.length; x++)
             for (int y = 0; y < maze.length; y++)
                 if (maze[y][x].equals(c))
@@ -78,14 +79,14 @@ public class TestMazeBuilder extends TestEnvironment {
 
     // c) there must exist a path between any blank cell and the maze exit
     private boolean checkExitReachable(GameObject[][] maze) {
-        Point p = findPos(maze, new GameObject(0,0, new char[]{'S', ' '}));
-        boolean [][] visited = new boolean[maze.length] [maze.length];
+        Point p = findPos(maze, new GameObject(0, 0, new char[]{'S', ' '}));
+        boolean[][] visited = new boolean[maze.length][maze.length];
 
         visit(maze, p.getY(), p.getX(), visited);
 
         for (int i = 0; i < maze.length; i++)
             for (int j = 0; j < maze.length; j++)
-                if (!maze[i][j].equals(wall) && ! visited[i][j] )
+                if (!maze[i][j].equals(wall) && !visited[i][j])
                     return false;
 
         return true;
@@ -93,16 +94,16 @@ public class TestMazeBuilder extends TestEnvironment {
 
     // auxiliary method used by checkExitReachable
     // marks a cell as visited and proceeds recursively to its neighbors
-    private void visit(GameObject[][] m, int i, int j, boolean [][] visited) {
+    private void visit(GameObject[][] m, int i, int j, boolean[][] visited) {
         if (i < 0 || i >= m.length || j < 0 || j >= m.length)
             return;
         if (m[i][j].equals(wall) || visited[i][j])
             return;
         visited[i][j] = true;
-        visit(m, i-1, j, visited);
-        visit(m, i+1, j, visited);
-        visit(m, i, j-1, visited);
-        visit(m, i, j+1, visited);
+        visit(m, i - 1, j, visited);
+        visit(m, i + 1, j, visited);
+        visit(m, i, j - 1, visited);
+        visit(m, i, j + 1, visited);
     }
 
     @Test
@@ -130,14 +131,14 @@ public class TestMazeBuilder extends TestEnvironment {
         Random rand = new Random();
 
         for (int i = 0; i < numMazes; i++) {
-            int size = maxMazeSize == minMazeSize? minMazeSize : minMazeSize + 2 * rand.nextInt((maxMazeSize - minMazeSize)/2);
+            int size = maxMazeSize == minMazeSize ? minMazeSize : minMazeSize + 2 * rand.nextInt((maxMazeSize - minMazeSize) / 2);
             Board b = new Board(size);
             GameObject[][] m = b.getBoard();
             assertTrue("Invalid maze boundaries in maze:\n" + m, checkBoundaries(m));
-            assertTrue("Invalid walls in maze:\n" + m, ! hasSquare(m, badWalls));
-            assertTrue("Invalid spaces in maze:\n" + m, ! hasSquare(m, badSpaces));
-            assertTrue("Invalid diagonals in maze:\n" + m, ! hasSquare(m, badDiagonalDown));
-            assertTrue("Invalid diagonals in maze:\n" + m, ! hasSquare(m, badDiagonalUp));
+            assertTrue("Invalid walls in maze:\n" + m, !hasSquare(m, badWalls));
+            assertTrue("Invalid spaces in maze:\n" + m, !hasSquare(m, badSpaces));
+            assertTrue("Invalid diagonals in maze:\n" + m, !hasSquare(m, badDiagonalDown));
+            assertTrue("Invalid diagonals in maze:\n" + m, !hasSquare(m, badDiagonalUp));
             assertTrue("Maze exit not reachable in maze:\n" + m, checkExitReachable(m));
             assertNotNull("Missing exit in maze:\n" + m, findPos(m, exit));
             assertNotNull("Missing hero in maze:\n" + m, findPos(m, hero));
@@ -147,9 +148,9 @@ public class TestMazeBuilder extends TestEnvironment {
         }
     }
 
-    public String str(char [][] maze) {
+    public String str(char[][] maze) {
         StringBuilder s = new StringBuilder();
-        for (char [] line : maze) {
+        for (char[] line : maze) {
             s.append(Arrays.toString(line));
             s.append("\n");
         }

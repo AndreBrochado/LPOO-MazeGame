@@ -14,7 +14,7 @@ public class Board {
     private GameCharacter[] characters;
 
     //test mode constructor
-    public Board(GameObject[][] board){
+    public Board(GameObject[][] board) {
         this.board = board;
     }
 
@@ -32,26 +32,26 @@ public class Board {
     public void updateBoard() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if(!Arrays.asList(this.objects).contains(board[j][i]))
+                if (!Arrays.asList(this.objects).contains(board[j][i]))
                     board[j][i] = getEmpty();
             }
         }
-        for (GameCharacter c : characters){
-            if(c.state != GameCharacter.DEAD)
+        for (GameCharacter c : characters) {
+            if (c.state != GameCharacter.DEAD)
                 board[c.getY()][c.getX()] = c;
         }
     }
 
     //print on the screen the board
     public String toString() {
-        String s="";
+        String s = "";
         for (GameObject[] line : board) {
             for (GameObject obj : line) {
                 s = s + obj.getRepresentation() + ' ';
             }
             s = s + '\n';
         }
-            return s;
+        return s;
     }
 
     //check if Hero is next to any Dragon and take account of combat consequences
@@ -70,7 +70,7 @@ public class Board {
 
     //move a GameCharacter if possible on horizontal (-1 or 1 in deltax) or in vertical (-1 or 1 in deltay)
     private void moveActions(GameCharacter character, int deltax, int deltay) {
-        if (board[character.getY() + deltay][character.getX() + deltax].impassable == false && !(board[character.getY()+deltay][character.getX()+deltax].equals(getExit()) && !allDragonsDead())) {
+        if (board[character.getY() + deltay][character.getX() + deltax].impassable == false && !(board[character.getY() + deltay][character.getX() + deltax].equals(getExit()) && !allDragonsDead())) {
             if (character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
                 character.state = GameCharacter.VISIBLE;
                 board[character.getY() + deltay][character.getX() + deltax].state = GameObject.VISIBLE;
@@ -160,7 +160,7 @@ public class Board {
         return board;
     }
 
-    private boolean allDragonsDead(){
+    private boolean allDragonsDead() {
         for (int i = 1; i < characters.length; i++) {
             if (characters[i].state != GameCharacter.DEAD)
                 return false;

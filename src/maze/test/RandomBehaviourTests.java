@@ -36,7 +36,7 @@ public class RandomBehaviourTests extends TestEnvironment {
 
         while (fellAsleep == false) {
             b.handleAllDragonsSleep();
-            if(dragon.getState() == 3)
+            if (dragon.getState() == 3)
                 fellAsleep = true;
         }
     }
@@ -50,7 +50,7 @@ public class RandomBehaviourTests extends TestEnvironment {
 
         while (wokeUp == false) {
             b.handleAllDragonsSleep();
-            if(dragon.getState() != 3)
+            if (dragon.getState() != 3)
                 wokeUp = true;
         }
     }
