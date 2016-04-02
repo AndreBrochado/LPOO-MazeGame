@@ -1,5 +1,7 @@
 package maze.logic;
 
+import maze.cli.GameLauncher;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -91,16 +93,16 @@ public class Board {
     public void moveHero(char userInput) {
         int deltax = 0, deltay = 0;
         switch (userInput) {
-            case 'W':
+            case MazeGame.UP:
                 deltay = -1;
                 break;
-            case 'S':
+            case MazeGame.DOWN:
                 deltay = 1;
                 break;
-            case 'A':
+            case MazeGame.LEFT:
                 deltax = -1;
                 break;
-            case 'D':
+            case MazeGame.RIGHT:
                 deltax = 1;
                 break;
             default:
@@ -173,12 +175,12 @@ public class Board {
 
     public int getBoardState() {
         if (getHero().state == GameCharacter.DEAD)
-            return 1;
+            return MazeGame.GAME_LOST;
 
         if (allDragonsDead() && getHero().getPosition().equals(getExit().getPosition()))
-            return 2;
+            return MazeGame.GAME_WON;
 
-        return 0;
+        return MazeGame.GAME_UNDERWAY;
     }
 
     public void setBoard(GameObject[][] board) {

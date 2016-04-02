@@ -1,9 +1,7 @@
 package maze.cli;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import maze.logic.Board;
-import maze.logic.GameCharacter;
-import maze.logic.GameObject;
+import maze.logic.MazeGame;
 
 import java.util.Scanner;
 
@@ -12,7 +10,7 @@ import java.util.Scanner;
  */
 
 
-public class MazeGame {
+public class GameLauncher {
 
     //reads a char from the user and returns it
     private char inputReader() {
@@ -50,8 +48,7 @@ public class MazeGame {
         System.out.println(b);
     }
 
-    //this function implements the game loop
-    private boolean playGame(boolean dragonMoves, boolean dragonSleeps) {
+    private Board createBoard(){
         boolean validSize = false;
         Board gameBoard = null;
 
@@ -63,24 +60,25 @@ public class MazeGame {
                 int noDragons = askForUserInput(1, size/2);
                 gameBoard = new Board(size, noDragons);
                 validSize = true;
-            } catch (IllegalArgumentException ignore) {
+            } catch (IllegalArgumentException e) {
                 System.out.println("Board size must be odd!");
             }
         }
+        return gameBoard;
+    }
+
+    //this function implements the game loop
+    private boolean playGame(int gameMode) {
+
+        MazeGame game = new MazeGame(createBoard(), gameMode);
 
         int boardState;
         do {
-            this.printBoard(gameBoard);
+            this.printBoard(game.getGameBoard());
             System.out.print("Insert your movement choice (W - up, A - left, S - down, D - right: ");
-            char input = inputReader();
-            gameBoard.moveHero(input);
-            gameBoard.updateBoard();
-            if (dragonSleeps)
-                gameBoard.handleAllDragonsSleep();
-            if (dragonMoves)
-                gameBoard.moveAllDragons();
-            boardState = gameBoard.getBoardState();
-        } while (boardState == 0);
+            char input = Character.toLowerCase(inputReader());
+            boardState = game.makePlay(input);
+        } while (boardState == MazeGame.GAME_UNDERWAY);
 
         return boardState != 1;
     }
@@ -97,17 +95,8 @@ public class MazeGame {
             choice = askForUserInput(1, 4);
             boolean playerWon = false, playedGame = choice != 4;
 
-            switch (choice) {
-                case 1:
-                    playerWon = playGame(false, false);
-                    break;
-                case 2:
-                    playerWon = playGame(true, false);
-                    break;
-                case 3:
-                    playerWon = playGame(true, true);
-                    break;
-            }
+            playerWon = playGame(choice-1);
+
             if (playedGame) {
                 if (playerWon)
                     System.out.println("Congratulations! You won the game!");
@@ -123,7 +112,7 @@ public class MazeGame {
     }
 
     public static void main(String[] args) {
-        MazeGame game = new MazeGame();
+        GameLauncher game = new GameLauncher();
         int choice = 0;
 
         do {
