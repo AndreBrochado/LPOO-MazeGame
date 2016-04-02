@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class AppWindow {
 
@@ -194,6 +196,8 @@ public class AppWindow {
                 setEnabledDirectionButtons(true);
                 gameAreaField.setText(""+game.getGameBoard());
                 bottomLabel.setText("You can play!");
+                gameAreaField.setVisible(true);
+                gameAreaField.requestFocus();
             }
 		});
 		buttonsPanel.add(genMazeButton);
@@ -274,6 +278,34 @@ public class AppWindow {
 		gameAreaField.setFont(new Font("Courier New", Font.PLAIN, 13));
 		gameAreaField.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		gameAreaField.setEditable(false);
+        gameAreaField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch(e.getKeyCode()){
+                    case KeyEvent.VK_UP:
+                        clickDirection(MazeGame.UP);
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        clickDirection(MazeGame.DOWN);
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        clickDirection(MazeGame.LEFT);
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        clickDirection(MazeGame.RIGHT);
+                        break;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
 		gameAreaPanel.add(gameAreaField, BorderLayout.CENTER);
 		gameAreaField.setColumns(20);
 		
