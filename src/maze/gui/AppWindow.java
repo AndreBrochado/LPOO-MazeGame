@@ -284,19 +284,21 @@ public class AppWindow {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                switch(e.getKeyCode()){
-                    case KeyEvent.VK_UP:
-                        clickDirection(MazeGame.UP);
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        clickDirection(MazeGame.DOWN);
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        clickDirection(MazeGame.LEFT);
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        clickDirection(MazeGame.RIGHT);
-                        break;
+				if(upButton.isEnabled()) {
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_UP:
+                            clickDirection(MazeGame.UP);
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            clickDirection(MazeGame.DOWN);
+                            break;
+                        case KeyEvent.VK_LEFT:
+                            clickDirection(MazeGame.LEFT);
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            clickDirection(MazeGame.RIGHT);
+                            break;
+                    }
                 }
             }
 

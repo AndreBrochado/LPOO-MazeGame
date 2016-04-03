@@ -13,6 +13,8 @@ public class GameObject {
     protected int state = 0;
     protected boolean impassable = false, equipable = false;
     protected char[] representations;
+    protected int noImages;
+    protected String[] imagesPaths;
 
     //base constructor
     public GameObject() {
@@ -34,6 +36,13 @@ public class GameObject {
         this(x, y, representations);
         this.impassable = impassable;
         this.equipable = equipable;
+    }
+
+    public void setImagesData(int noImages, String firstImage){
+        this.noImages = noImages;
+        this.imagesPaths = new String[noImages];
+        for(int i = 0; i < noImages; i++)
+            this.imagesPaths[i] = firstImage + i;
     }
 
     public char getRepresentation() {
