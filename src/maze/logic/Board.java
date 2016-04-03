@@ -41,6 +41,11 @@ public class Board {
                     board[j][i] = getEmpty();
             }
         }
+        for(GameObject o : objects){
+            if(o.getX() != -1 && o.getY() != -1)
+                if(o.getState() != GameObject.INVISIBLE)
+                    board[o.getY()][o.getX()] = o;
+        }
         for (GameCharacter c : characters) {
             if (c.state != GameCharacter.DEAD)
                 board[c.getY()][c.getX()] = c;
@@ -78,7 +83,7 @@ public class Board {
         if (board[character.getY() + deltay][character.getX() + deltax].impassable == false && !(board[character.getY() + deltay][character.getX() + deltax].equals(getExit()) && !allDragonsDead())) {
             if (character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
                 character.state = GameCharacter.VISIBLE;
-                board[character.getY() + deltay][character.getX() + deltax].state = GameObject.VISIBLE;
+                getSword().state = GameObject.VISIBLE;
             }
             if (board[character.getY() + deltay][character.getX() + deltax].equipable == true && board[character.getY() + deltay][character.getX() + deltax].state == GameObject.VISIBLE) {
                 character.state = GameCharacter.ARMED;
@@ -89,7 +94,15 @@ public class Board {
         checkCombat();
     }
 
-    //receive the userInput and moveHero in the corret direction depending on the input
+    /**
+     * Moves the user 1 position to the specified direction by the user.
+     * Moves the character only if the movement is valid and takes care of any actions caused by the movement
+     *
+     * @param userInput
+     *              Direction char that user inputed
+     *
+     * @see {@link private void moveActions(GameCharacter character, int deltax, int deltay)}
+     */
     public void moveHero(char userInput) {
         int deltax = 0, deltay = 0;
         switch (userInput) {
@@ -113,7 +126,7 @@ public class Board {
 
     //this funciont move the dragon on a random direction
     public void moveDragon(GameCharacter dragon) {
-        if (dragon.state == GameCharacter.VISIBLE) {
+        if (dragon.state == GameCharacter.VISIBLE || dragon.state == GameCharacter.ARMED) {
             Random random = new Random();
             int deltax = 0, deltay = 0;
             int movement = random.nextInt(5);
@@ -193,6 +206,10 @@ public class Board {
 
     public GameObject getWall() {
         return this.objects[1];
+    }
+
+    public GameObject getSword() {
+        return this.objects[2];
     }
 
     private GameObject getExit() {

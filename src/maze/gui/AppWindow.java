@@ -196,7 +196,6 @@ public class AppWindow {
                 setEnabledDirectionButtons(true);
                 gameAreaField.setText(""+game.getGameBoard());
                 bottomLabel.setText("You can play!");
-                gameAreaField.setVisible(true);
                 gameAreaField.requestFocus();
             }
 		});

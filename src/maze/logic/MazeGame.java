@@ -23,11 +23,11 @@ public class MazeGame {
 
     public int makePlay(char heroMovement){
         gameBoard.moveHero(heroMovement);
-        gameBoard.updateBoard();
         if (gameMode == 2)
             gameBoard.handleAllDragonsSleep();
         if (gameMode != 0)
             gameBoard.moveAllDragons();
+        gameBoard.updateBoard();
         return gameBoard.getBoardState();
     }
 
