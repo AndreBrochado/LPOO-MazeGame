@@ -1,16 +1,49 @@
 package maze.logic;
 
 /**
- * Created by Andre on 27/02/2016.
+ *
+ * Represents the GameCharacter such as Dragon and Hero.
+ * It's a derived class of GameObject
+ *
+ * @author Andre Reis
+ * @author Vasco Ribeiro
+ *
  */
 
 public class GameCharacter extends GameObject {
 
     final static int DEAD = 1, ARMED = 2, ASLEEP = 3;
 
+    /**
+     *
+     * Constructs and initializes the position specified, the representations specified and states as false by default.
+     *
+     * @param x
+     *          Original X coord.
+     *
+     * @param y
+     *          Original Y coord.
+     *
+     * @param representations
+     *          Chars representations of the Character.
+     *
+     */
+
     public GameCharacter(int x, int y, char[] representations) {
         super(x, y, representations, false, false);
     }
+
+    /**
+     *
+     * Move the Character in a specified direction.
+     *
+     * @param deltax
+     *          Integer to increment
+     *
+     * @param deltay
+     *          Integer to increment
+     *
+     */
 
     public void move(int deltax, int deltay) {
         this.position.incrementX(deltax);

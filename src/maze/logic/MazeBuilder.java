@@ -4,7 +4,12 @@ import java.util.Random;
 import java.util.Stack;
 
 /**
- * Created by Andre on 08/03/2016.
+ *
+ * Build random Maze
+ *
+ * @author Andre Reis
+ * @author Vasco Ribeiro
+ *
  */
 
 public class MazeBuilder implements IMazeBuilder {
@@ -25,6 +30,12 @@ public class MazeBuilder implements IMazeBuilder {
     private GameCharacter[] dragons;
     private GameObject empty, wall, sword, exit;
 
+    /**
+     *
+     * Constructor and initializes values by default.
+     *
+     */
+
     public MazeBuilder() {
         this.generator = new Random();
         this.empty = new GameObject();
@@ -33,6 +44,18 @@ public class MazeBuilder implements IMazeBuilder {
         this.exit = new GameObject(-1, -1, new char[]{'S', ' '});
         this.hero = new GameCharacter(-1, -1, new char[]{'H', ' ', 'A'});
     }
+
+
+    /**
+     *
+     * Initialize necessary values to the maze builder
+     *
+     * @param mazeSize
+     *                  Size of the maze
+     * @param numDragons
+     *                  Number of dragons
+     *
+     */
 
     private void initializeValues(int mazeSize, int numDragons) {
         this.mazeSize = mazeSize;
@@ -51,6 +74,14 @@ public class MazeBuilder implements IMazeBuilder {
         pathHistory = new Stack<>();
     }
 
+
+    /**
+     *
+     * Create guide cell that would help us to build maze.
+     * Guide cell need to be next to the Exit.
+     *
+     */
+
     private void createGuideCell() {
         int guideCellX = exit.getX(), guideCellY = exit.getY();
         if (exit.getX() == 0) {
@@ -65,6 +96,14 @@ public class MazeBuilder implements IMazeBuilder {
         //convert to visited cell coordinate "pattern"
         guideCell = new Coordinate((guideCellX - 1) / 2, (guideCellY - 1) / 2);
     }
+
+
+    /**
+     *
+     * Create the maze exit randomly.
+     * Exit cant be on a corner and has to be in odd coords.
+     *
+     */
 
     private void createExit() {
         int cornerDistance = 0;
@@ -86,6 +125,13 @@ public class MazeBuilder implements IMazeBuilder {
         }
     }
 
+
+    /**
+     *
+     * Creat the 2D boolean array call visited cells where we save the visited cells. It is initialized as false.
+     *
+     */
+
     private void createVisitedCellsArray() {
         visitedCellsSize = (mazeSize - 1) / 2;
         visitedCells = new boolean[visitedCellsSize][visitedCellsSize];
@@ -93,6 +139,18 @@ public class MazeBuilder implements IMazeBuilder {
             for (int j = 0; j < visitedCellsSize; j++)
                 visitedCells[i][j] = false;
     }
+
+
+    /**
+     *
+     * Check if the valid cell can move to a specified direction.
+     *
+     * @param direction
+     *              Direction of the movement
+     *
+     * @return true if it's a valid movement, otherwise return false
+     *
+     */
 
     private boolean validGuideCellMovement(int direction) {
         switch (direction) {
@@ -107,6 +165,16 @@ public class MazeBuilder implements IMazeBuilder {
         }
         return false;
     }
+
+    /**
+     *
+     * Move Guide cell in a specified direction updating her position.
+     *
+     * @param direction
+     *              Direction of the movement
+
+     *
+     */
 
     private void moveGuideCell(int direction) {
         Coordinate newPos = new Coordinate();
@@ -137,6 +205,14 @@ public class MazeBuilder implements IMazeBuilder {
         pathHistory.push(guideCell);
     }
 
+    /**
+     *
+     * Check if is dead end.
+     *
+     * @return false if we can move Guide cell in all directions, otherwise return true
+     *
+     */
+
     private boolean isDeadEnd() {
         for (int i = 0; i < 4; i++) {
             if (validGuideCellMovement(i))
@@ -144,6 +220,17 @@ public class MazeBuilder implements IMazeBuilder {
         }
         return true;
     }
+
+    /**
+     *
+     * Add an object to the maze.
+     * Object position is randomly choose.
+     *
+     * @param object
+     *              Game object to be add.
+     *
+     *
+     */
 
     public void addObject(GameObject object) {
         Coordinate pos = new Coordinate(0, 0);
@@ -158,6 +245,17 @@ public class MazeBuilder implements IMazeBuilder {
         object.setY(pos.getY());
     }
 
+    /**
+     *
+     * Check if a specified coordinate is adjacent to the Hero.
+     *
+     * @param pos
+     *              Coordinate analyse.
+     *
+     * @return true if coordinate is adjacent to the hero, otherwise return false
+     *
+     */
+
     public boolean isAdjacentToHero(Coordinate pos) {
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
@@ -170,6 +268,17 @@ public class MazeBuilder implements IMazeBuilder {
         }
         return false;
     }
+
+    /**
+     *
+     * Add a dragon to the maze.
+     * Dragon position is randomly choose but it cant be adjacent to the hero.
+     *
+     * @param dragon
+     *              Game object to be add.
+     *
+     *
+     */
 
     public void addDragon(GameObject dragon) {
         Coordinate pos = new Coordinate(0, 0);
@@ -184,9 +293,37 @@ public class MazeBuilder implements IMazeBuilder {
         dragon.setY(pos.getY());
     }
 
+    /**
+     *
+     * Construct maze with specified size and using 1 for number of dragons.
+     *
+     * @param size
+     *              Maze size
+     *
+     *  @return the new Maze
+     *
+     *  @see {@link public GameObject[][] buildMaze(int size, int numDragons) throws IllegalArgumentException}
+     *
+     */
+
     public GameObject[][] buildMaze(int size) throws IllegalArgumentException {
         return buildMaze(size, 1);
     }
+
+    /**
+     *
+     * Construct random maze with specified size and number of Dragons.
+     * An exception is thrown if size is lower than 3 or even.
+     *
+     * @param size
+     *              Maze size
+     *
+     * @param numDragons
+     *              Number of Dragons
+     *
+     *  @return the new Maze
+     *
+     */
 
     public GameObject[][] buildMaze(int size, int numDragons) throws IllegalArgumentException {
         if (size <= 3 || size % 2 == 0)
