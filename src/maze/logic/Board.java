@@ -121,6 +121,7 @@ public class Board {
             default:
                 return;
         }
+        getHero().setLastMovement(userInput);
         moveActions(getHero(), deltax, deltay);
     }
 
@@ -129,23 +130,25 @@ public class Board {
         if (dragon.state == GameCharacter.VISIBLE || dragon.state == GameCharacter.ARMED) {
             Random random = new Random();
             int deltax = 0, deltay = 0;
-            int movement = random.nextInt(5);
-            switch (movement) {
-                case 0:
-                    return;
-                case 1:
+            char[] movementOptions = new char[]{' ', MazeGame.LEFT, MazeGame.RIGHT, MazeGame.UP, MazeGame.DOWN};
+            int movementIndex = random.nextInt(5);
+            switch (movementOptions[movementIndex]) {
+                case MazeGame.LEFT:
                     deltax = -1;
                     break;
-                case 2:
+                case MazeGame.RIGHT:
                     deltax = 1;
                     break;
-                case 3:
+                case MazeGame.UP:
                     deltay = -1;
                     break;
-                case 4:
+                case MazeGame.DOWN:
                     deltay = 1;
                     break;
+                default:
+                    return;
             }
+            dragon.setLastMovement(movementOptions[movementIndex]);
             moveActions(dragon, deltax, deltay);
         }
     }

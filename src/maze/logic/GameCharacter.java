@@ -6,7 +6,8 @@ package maze.logic;
 
 public class GameCharacter extends GameObject {
 
-    final static int DEAD = 1, ARMED = 2, ASLEEP = 3;
+    public final static int DEAD = 1, ARMED = 2, ASLEEP = 3;
+    private char lastMovement = MazeGame.UP;
 
     public GameCharacter(int x, int y, char[] representations) {
         super(x, y, representations, false, false);
@@ -17,4 +18,11 @@ public class GameCharacter extends GameObject {
         this.position.incrementY(deltay);
     }
 
+    public char getLastMovement() {
+        return lastMovement;
+    }
+
+    public void setLastMovement(char lastMovement) {
+        this.lastMovement = lastMovement;
+    }
 }
