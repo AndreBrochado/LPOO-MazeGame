@@ -18,7 +18,6 @@ import java.awt.event.MouseEvent;
 
 public class MazeCreator extends JDialog implements ActionListener {
 
-    private JDialog thisDialog;
     private JTextField mazeSizeField;
     private GamePanel mazePanel;
     private JComboBox dragonTypeBox;
@@ -167,10 +166,6 @@ public class MazeCreator extends JDialog implements ActionListener {
         highlightedCell.setY((int) (mouseY / cellSize));
     }
 
-	/*public boolean isVisible(){
-        return this.isVisible();
-	}*/
-
     /**
      * Create the application.
      */
@@ -185,12 +180,11 @@ public class MazeCreator extends JDialog implements ActionListener {
      * Initialize the contents of the frame.
      */
     public void initialize(MazeGame game) {
-        thisDialog = this;
         newBoard = game.getGameBoard();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setBounds(0, 0, screenSize.width, screenSize.height * 3/4);
         this.setTitle("Play Maze Game");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.getContentPane().setLayout(new BorderLayout(0, 0));
 
         JPanel mainPanel = new JPanel();
@@ -345,7 +339,7 @@ public class MazeCreator extends JDialog implements ActionListener {
             newBoard.setObjects(new GameObject[]{empty, wall, sword, exit});
             this.game.setGameBoard(newBoard);
             game.setGameMode(dragonTypeBox.getSelectedIndex());
-            thisDialog.setVisible(false);
+            this.dispose();
         }
 
     }
