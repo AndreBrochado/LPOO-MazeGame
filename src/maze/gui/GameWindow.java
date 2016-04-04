@@ -1,15 +1,12 @@
 package maze.gui;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.BorderLayout;
 
-public class GameWindow {
+public class GameWindow extends JDialog{
 
 	private JFrame frame;
 
@@ -26,9 +23,9 @@ public class GameWindow {
 	private void initialize(GamePanel panel) {
 		frame = new JFrame();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setBounds(screenSize.width/2-screenSize.height/2, 0, screenSize.height-22, screenSize.height);
+		frame.setBounds(screenSize.width/2-screenSize.height/2, 0, screenSize.height-60, screenSize.height-38);
 		frame.setTitle("Play Maze Game");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);

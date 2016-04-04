@@ -51,10 +51,19 @@ public class GameCharacter extends GameObject {
         this.position.incrementY(deltay);
     }
 
+    /**
+     * Returns the Char that represents the last movement
+     * @return last movement
+     */
     public char getLastMovement() {
         return lastMovement;
     }
 
+    /**
+     * Sets the last movement char to a given direction
+     * @param lastMovement
+     *                      last movement direction
+     */
     public void setLastMovement(char lastMovement) {
         this.lastMovement = lastMovement;
     }

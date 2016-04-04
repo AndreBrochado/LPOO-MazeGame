@@ -4,9 +4,6 @@ import maze.logic.Board;
 import maze.logic.GameCharacter;
 import maze.logic.GameObject;
 
-/**
- * Created by Andre on 24/03/2016.
- */
 public class TestEnvironment {
 
     protected GameObject empty = new GameObject();

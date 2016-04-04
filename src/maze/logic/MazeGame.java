@@ -88,15 +88,21 @@ public class MazeGame {
         return gameBoard;
     }
 
+    /**
+     * Sets the game board to a given board
+     * @param gameBoard
+     *                    given game board
+     */
 	public void setGameBoard(Board gameBoard) {
 		this.gameBoard = gameBoard;
 	}
 
+    /**
+     * Sets the game mode to a given mode
+     * @param gameMode
+     *                  given game mode
+     */
 	public void setGameMode(int gameMode) {
 		this.gameMode = gameMode;
 	}
-
-    public int getGameMode() {
-        return gameMode;
-    }
 }

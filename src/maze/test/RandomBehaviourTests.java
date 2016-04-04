@@ -5,9 +5,6 @@ import maze.logic.Board;
 import org.junit.Test;
 
 
-/**
- * Created by Andre on 05/03/2016.
- */
 public class RandomBehaviourTests extends TestEnvironment {
 
     @Test(timeout = 2500)

@@ -8,9 +8,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Vasco Ribeiro on 02/03/2016.
- */
 public class FirstGameModeTests extends TestEnvironment {
 
     @Test
@@ -83,8 +80,7 @@ public class FirstGameModeTests extends TestEnvironment {
 
         b.moveHero(MazeGame.DOWN);
 
-        //TODO add assert equals hero same position (didnt move to exit)
-        assertEquals(0, b.getBoardState()); //state 0 equals to normal state board
+        assertEquals(0, b.getBoardState());
     }
 
 
@@ -96,7 +92,6 @@ public class FirstGameModeTests extends TestEnvironment {
 
         b.moveHero(MazeGame.DOWN);
 
-        //TODO add assert equals hero same position (didnt move to exit)
-        assertEquals(0, b.getBoardState()); //state 0 equals to normal state board
+        assertEquals(0, b.getBoardState());
     }
 }

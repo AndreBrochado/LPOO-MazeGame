@@ -13,12 +13,8 @@ import java.awt.GridLayout;
 import javax.swing.border.EmptyBorder;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.ComponentOrientation;
-import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.*;
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 
 public class AppWindow {
@@ -64,7 +60,7 @@ public class AppWindow {
                                             	 frmMazeGame.setVisible(true);
                                             	 gameWindow.close();
                                                  playGame.setEnabled(false);
-                                            	 break;                                            	 
+                                            	 break;
                                          }
                                      }
                                  }

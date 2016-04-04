@@ -5,21 +5,14 @@ import maze.logic.MazeGame;
 
 import java.util.Scanner;
 
-/**
- * Created by Andre on 27/02/2016.
- */
-
-
 public class GameLauncher {
 
-    //reads a char from the user and returns it
     private char inputReader() {
         Scanner reader = new Scanner(System.in);
         char c = reader.next().charAt(0);
         return c;
     }
 
-    //outputs menus given an array of choices
     private void displayMenu(String[] s) {
         for (int i = 0; i < s.length; i++) {
             System.out.println((i + 1) + ". " + s[i]);
@@ -27,7 +20,6 @@ public class GameLauncher {
         System.out.print("Insert your choice: ");
     }
 
-    //reads a number from the user between min and max and returns it
     private int askForUserInput(int min, int max) {
         int choice = 0;
         boolean invalidInput = true;
@@ -67,7 +59,6 @@ public class GameLauncher {
         return gameBoard;
     }
 
-    //this function implements the game loop
     private boolean playGame(int gameMode) {
 
         MazeGame game = new MazeGame(createBoard(), gameMode);
@@ -83,16 +74,19 @@ public class GameLauncher {
         return boardState != 1;
     }
 
-    //allows the player to choose one of the 3 Game Modes
     public void chooseGameMode() {
 
-        int choice = 0;
+        int choice;
 
-        while (choice != 4) {
+        while (true) {
             String[] options = {"Immobile Dragon", "Dragon with random movement", "Dragon with random movement and rest", "Exit"};
 
             displayMenu(options);
             choice = askForUserInput(1, 4);
+
+            if(choice == 4)
+                System.exit(0);
+
             boolean playerWon = false, playedGame = choice != 4;
 
             playerWon = playGame(choice-1);
@@ -107,13 +101,11 @@ public class GameLauncher {
             } else
                 System.out.println("Ok :( Goodbye!");
         }
-
-        System.exit(0);
     }
 
     public static void main(String[] args) {
         GameLauncher game = new GameLauncher();
-        int choice = 0;
+        int choice;
 
         do {
             String[] options = {"New Game", "Exit"};
@@ -122,7 +114,8 @@ public class GameLauncher {
 
             choice = game.askForUserInput(1, 2);
 
-            game.chooseGameMode();
+            if(choice != 2)
+                game.chooseGameMode();
 
         } while (choice != 2);
 
