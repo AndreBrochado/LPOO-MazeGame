@@ -27,27 +27,75 @@ public class AppWindow {
     private JTextField mazeSizeField;
     private JTextField noDragonsField;
     private JTextArea gameAreaField;
-    private JButton upButton, downButton, leftButton, rightButton;
+    private JButton playGame;
+    private JPanel gameAreaPanel;
     private JLabel bottomLabel;
     private MazeGame game;
     private GamePanel panel;
+    private GameWindow gameWindow;
 
-    private void setEnabledDirectionButtons(boolean set) {
-        upButton.setEnabled(set);
-        downButton.setEnabled(set);
-        leftButton.setEnabled(set);
-        rightButton.setEnabled(set);
+    private void createPanel() {
+    	panel = new GamePanel();
+        gameAreaPanel.add(panel, BorderLayout.CENTER);
+        panel.addKeyListener(new KeyListener() {
+                                 @Override
+                                 public void keyTyped(KeyEvent e) {
+
+                                 }
+
+                                 @Override
+                                 public void keyPressed(KeyEvent e) {
+                                     if (game.getGameBoard().getBoardState() == MazeGame.GAME_UNDERWAY) {
+                                         switch (e.getKeyCode()) {
+                                             case KeyEvent.VK_LEFT:
+                                                 clickDirection(MazeGame.LEFT);
+                                                 break;
+                                             case KeyEvent.VK_RIGHT:
+                                                 clickDirection(MazeGame.RIGHT);
+                                                 break;
+                                             case KeyEvent.VK_UP:
+                                                 clickDirection(MazeGame.UP);
+                                                 break;
+                                             case KeyEvent.VK_DOWN:
+                                                 clickDirection(MazeGame.DOWN);
+                                                 break;
+                                             case KeyEvent.VK_ESCAPE:
+                                            	 createPanel();
+                                            	 frmMazeGame.setVisible(true);
+                                            	 gameWindow.close();
+                                                 playGame.setEnabled(false);
+                                            	 break;                                            	 
+                                         }
+                                     }
+                                 }
+
+                                 @Override
+                                 public void keyReleased(KeyEvent e) {
+
+                                 }
+                             }
+        );
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                panel.requestFocus();
+            }
+        });
     }
 
     private void clickDirection(char direction) {
         int gameState = game.makePlay(direction);
         panel.repaint();
         if (gameState != MazeGame.GAME_UNDERWAY) {
-            setEnabledDirectionButtons(false);
             if (gameState == MazeGame.GAME_WON)
                 bottomLabel.setText("You won the game! :D");
             else if (gameState == MazeGame.GAME_LOST)
                 bottomLabel.setText("You lost the game... :(");
+            gameWindow.close();
+            frmMazeGame.setVisible(true);
+            createPanel();
+            playGame.setEnabled(false);
         }
     }
 
@@ -160,7 +208,7 @@ public class AppWindow {
         gbc_buttonsPanel.gridx = 2;
         gbc_buttonsPanel.gridy = 0;
         mainPanel.add(buttonsPanel, gbc_buttonsPanel);
-        buttonsPanel.setLayout(new GridLayout(2, 0, 0, 25));
+        buttonsPanel.setLayout(new GridLayout(0, 1, 0, 25));
 
         JButton genMazeButton = new JButton("Generate Maze");
         genMazeButton.addActionListener(new ActionListener() {
@@ -192,23 +240,49 @@ public class AppWindow {
                     JOptionPane.showMessageDialog(mazeSizeField, "Maze Size must be odd!");
                     return;
                 }
-                setEnabledDirectionButtons(true);
 
                 panel.setGameBoard(game.getGameBoard());
                 panel.repaint();
+                
                 bottomLabel.setText("You can play!");
-                panel.requestFocus();
+                playGame.setEnabled(true);
+                
             }
         });
+        
+        playGame = new JButton("Play Game");
+        playGame.setEnabled(false);
+        playGame.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		gameWindow = new GameWindow(panel);
+        	}
+        });
+        buttonsPanel.add(playGame);
         buttonsPanel.add(genMazeButton);
+                
+                JButton createMaze = new JButton("Create Your Own Maze");
+                createMaze.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent arg0) {
+                		game = new MazeGame(11, 1, -1);
+                		MazeCreator mc = new MazeCreator(game);
 
-        JButton exitButton = new JButton("Exit");
-        exitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                System.exit(0);
-            }
-        });
-        buttonsPanel.add(exitButton);
+                        //frmMazeGame.setVisible(true);
+                        //panel.setVisible(true);
+                		panel.setGameBoard(game.getGameBoard());
+                		panel.repaint();
+                		bottomLabel.setText("You can play!");
+                        playGame.setEnabled(true);
+                	}
+                });
+                buttonsPanel.add(createMaze);
+                
+                        JButton exitButton = new JButton("Exit");
+                        exitButton.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent arg0) {
+                                System.exit(0);
+                            }
+                        });
+                        buttonsPanel.add(exitButton);
 
         JPanel directionsPanel = new JPanel();
         directionsPanel.setPreferredSize(new Dimension(250, 100));
@@ -219,52 +293,16 @@ public class AppWindow {
         gbc_directionsPanel.gridx = 2;
         gbc_directionsPanel.gridy = 1;
         mainPanel.add(directionsPanel, gbc_directionsPanel);
+        directionsPanel.setLayout(new BorderLayout(0, 0));
+        
+        JTextArea gameInstructions = new JTextArea();
+        gameInstructions.setMargin(new Insets(50, 2, 2, 2));
+        gameInstructions.setEditable(false);
+        gameInstructions.setFont(new Font("Courier New", Font.PLAIN, 12));
+        gameInstructions.setText("Instructions:\r\nTo choose your Game Maze:\r\n-Change the editable values boxes\r\n-Click Generate Maze\r\n-Repeat until you like the maze\r\n-Click Play Game\r\n-Use your Keyboard Arrow keys \r\n-Have Fun!");
+        directionsPanel.add(gameInstructions, BorderLayout.CENTER);
 
-        directionsPanel.setLayout(new GridLayout(2, 3, 0, 0));
-
-        JLabel label = new JLabel("");
-        directionsPanel.add(label);
-
-        upButton = new JButton("UP");
-        upButton.setEnabled(false);
-        upButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                clickDirection(MazeGame.UP);
-            }
-        });
-        directionsPanel.add(upButton);
-
-        JLabel label_1 = new JLabel("");
-        directionsPanel.add(label_1);
-
-        leftButton = new JButton("LEFT");
-        leftButton.setEnabled(false);
-        leftButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                clickDirection(MazeGame.LEFT);
-            }
-        });
-        directionsPanel.add(leftButton);
-
-        downButton = new JButton("DOWN");
-        downButton.setEnabled(false);
-        downButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                clickDirection(MazeGame.DOWN);
-            }
-        });
-        directionsPanel.add(downButton);
-
-        rightButton = new JButton("RIGHT");
-        rightButton.setEnabled(false);
-        rightButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                clickDirection(MazeGame.RIGHT);
-            }
-        });
-        directionsPanel.add(rightButton);
-
-        JPanel gameAreaPanel = new JPanel();
+        gameAreaPanel = new JPanel();
         GridBagConstraints gbc_gameAreaPanel = new GridBagConstraints();
         gbc_gameAreaPanel.gridwidth = 2;
         gbc_gameAreaPanel.gridheight = 2;
@@ -274,48 +312,9 @@ public class AppWindow {
         mainPanel.add(gameAreaPanel, gbc_gameAreaPanel);
         gameAreaPanel.setLayout(new BorderLayout(0, 0));
 
-        panel = new GamePanel();
-        gameAreaPanel.add(panel, BorderLayout.CENTER);
-        panel.addKeyListener(new KeyListener() {
-                                 @Override
-                                 public void keyTyped(KeyEvent e) {
-
-                                 }
-
-                                 @Override
-                                 public void keyPressed(KeyEvent e) {
-                                     if (game.getGameBoard().getBoardState() == MazeGame.GAME_UNDERWAY) {
-                                         switch (e.getKeyCode()) {
-                                             case KeyEvent.VK_LEFT:
-                                                 clickDirection(MazeGame.LEFT);
-                                                 break;
-                                             case KeyEvent.VK_RIGHT:
-                                                 clickDirection(MazeGame.RIGHT);
-                                                 break;
-                                             case KeyEvent.VK_UP:
-                                                 clickDirection(MazeGame.UP);
-                                                 break;
-                                             case KeyEvent.VK_DOWN:
-                                                 clickDirection(MazeGame.DOWN);
-                                                 break;
-                                         }
-                                     }
-                                 }
-
-                                 @Override
-                                 public void keyReleased(KeyEvent e) {
-
-                                 }
-                             }
-        );
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                panel.requestFocus();
-            }
-        });
-        panel.requestFocusInWindow();
+        createPanel();
+        
+        //panel.requestFocusInWindow();
         bottomLabel = new JLabel("You can generate your maze!");
         gameAreaPanel.add(bottomLabel, BorderLayout.SOUTH);
     }

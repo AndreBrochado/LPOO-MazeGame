@@ -21,6 +21,8 @@ public class GamePanel extends JPanel {
     private Board gameBoard;
     private BufferedImage background;
     private HashMap<String, BufferedImage> loadedImages;
+    private boolean hasHightlightedCell = false;
+    private int highlightX, highlightY;
 
     /**
      * Create the panel.
@@ -38,16 +40,37 @@ public class GamePanel extends JPanel {
         this.gameBoard = gameBoard;
     }
 
+    public void highlightCell(int x, int y){
+        if(!loadedImages.containsKey("images/Highlight.png")){
+            try {
+                loadedImages.put("images/Highlight.png", ImageIO.read(new File("images/Highlight.png")));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        int cellSize = getHeight() / gameBoard.getSize();
+
+        hasHightlightedCell = true;
+        highlightX = x;
+        highlightY = y;
+
+        repaint();
+    }
+
+    public int getThisSize(){
+        return getHeight();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, getHeight(), getHeight(), null);
 
         if (gameBoard != null) {
-            int compSize = getHeight() / gameBoard.getBoard().length;
+            int cellSize = getHeight() / gameBoard.getSize();
             String imgPath;
-            for (int i = 0; i < gameBoard.getBoard().length; i++) {
-                for (int j = 0; j < gameBoard.getBoard().length; j++) {
+            for (int i = 0; i < gameBoard.getSize(); i++) {
+                for (int j = 0; j < gameBoard.getSize(); j++) {
                     GameObject objToDraw = gameBoard.getBoard()[j][i];
                     if (objToDraw.getRepresentation() != ' ') {
                         if (objToDraw instanceof GameCharacter && objToDraw.getRepresentation() != 'd')
@@ -62,10 +85,12 @@ public class GamePanel extends JPanel {
                                 e.printStackTrace();
                             }
                         }
-                        g.drawImage(loadedImages.get(imgPath), i * compSize, j * compSize, compSize, compSize, null);
+                        g.drawImage(loadedImages.get(imgPath), i * cellSize, j * cellSize, cellSize, cellSize, null);
                     }
                 }
             }
+            if(hasHightlightedCell)
+                g.drawImage(loadedImages.get("images/Highlight.png"), highlightX*cellSize, highlightY*cellSize, cellSize, cellSize, null);
         }
     }
 }

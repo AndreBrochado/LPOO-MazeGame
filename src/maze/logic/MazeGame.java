@@ -34,4 +34,16 @@ public class MazeGame {
     public Board getGameBoard() {
         return gameBoard;
     }
+
+	public void setGameBoard(Board gameBoard) {
+		this.gameBoard = gameBoard;
+	}
+
+	public void setGameMode(int gameMode) {
+		this.gameMode = gameMode;
+	}
+
+    public int getGameMode() {
+        return gameMode;
+    }
 }

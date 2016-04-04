@@ -47,8 +47,8 @@ public class Board {
                     board[o.getY()][o.getX()] = o;
         }
         for (GameCharacter c : characters) {
-            if (c.state != GameCharacter.DEAD)
-                board[c.getY()][c.getX()] = c;
+                if (c.state != GameCharacter.DEAD)
+                    board[c.getY()][c.getX()] = c;
         }
     }
 
@@ -215,7 +215,7 @@ public class Board {
         return this.objects[2];
     }
 
-    private GameObject getExit() {
+    public GameObject getExit() {
         return this.objects[3];
     }
 
@@ -229,6 +229,10 @@ public class Board {
 
     public void setCharacters(GameCharacter[] characters) {
         this.characters = characters;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
 
