@@ -68,11 +68,11 @@ public class MazeGame {
 
     public int makePlay(char heroMovement){
         gameBoard.moveHero(heroMovement);
-        gameBoard.updateBoard();
         if (gameMode == 2)
             gameBoard.handleAllDragonsSleep();
         if (gameMode != 0)
             gameBoard.moveAllDragons();
+        gameBoard.updateBoard();
         return gameBoard.getBoardState();
     }
 
@@ -86,5 +86,17 @@ public class MazeGame {
 
     public Board getGameBoard() {
         return gameBoard;
+    }
+
+	public void setGameBoard(Board gameBoard) {
+		this.gameBoard = gameBoard;
+	}
+
+	public void setGameMode(int gameMode) {
+		this.gameMode = gameMode;
+	}
+
+    public int getGameMode() {
+        return gameMode;
     }
 }

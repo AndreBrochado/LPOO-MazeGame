@@ -24,8 +24,6 @@ public class GameObject {
      * Constructs and initializes values by defaults.
      *
      */
-
-    //base constructor
     public GameObject() {
         this.position = new Coordinate();
         char[] initializer = {' ', ' '};
@@ -83,8 +81,6 @@ public class GameObject {
      * @return Char representation.
      *
      */
-
-
     public char getRepresentation() {
         return representations[state];
     }

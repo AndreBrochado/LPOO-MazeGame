@@ -2,6 +2,8 @@ package maze.test;
 
 import maze.logic.Board;
 
+import maze.logic.GameCharacter;
+import maze.logic.MazeGame;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -18,7 +20,7 @@ public class FirstGameModeTests extends TestEnvironment {
         assertEquals(3, hero.getX());
         assertEquals(3, hero.getY());
 
-        b.moveHero('A');
+        b.moveHero(MazeGame.LEFT);
         assertEquals(2, hero.getX());
         assertEquals(3, hero.getY());
     }
@@ -30,7 +32,7 @@ public class FirstGameModeTests extends TestEnvironment {
         assertEquals(3, hero.getX());
         assertEquals(3, hero.getY());
 
-        b.moveHero('D');
+        b.moveHero(MazeGame.RIGHT);
         assertEquals(3, hero.getX());
         assertEquals(3, hero.getY());
     }
@@ -39,9 +41,9 @@ public class FirstGameModeTests extends TestEnvironment {
     public void testHeroEquipSword() {
         Board b = prepareTestBoard();
 
-        b.moveHero('W');
+        b.moveHero(MazeGame.UP);
 
-        assertEquals(2, hero.getState()); //state 2 equals to hero armed
+        assertEquals(GameCharacter.ARMED, hero.getState());
     }
 
 
@@ -49,8 +51,8 @@ public class FirstGameModeTests extends TestEnvironment {
     public void testHeroDeath() {
         Board b = prepareTestBoard();
 
-        b.moveHero('A');
-        assertEquals(1, hero.getState()); //state 1 equals to hero dead
+        b.moveHero(MazeGame.LEFT);
+        assertEquals(GameCharacter.DEAD, hero.getState());
     }
 
 
@@ -58,28 +60,28 @@ public class FirstGameModeTests extends TestEnvironment {
     public void testArmedHeroKillDragon() {
         Board b = prepareTestBoard();
 
-        hero.setState(2); //Hero get armed
+        hero.setState(GameCharacter.ARMED);
 
-        b.moveHero('A');
-        assertEquals(1, dragon.getState()); //state 1 equals to dragon dead
+        b.moveHero(MazeGame.LEFT);
+        assertEquals(GameCharacter.DEAD, dragon.getState());
     }
 
     @Test
     public void testHeroWin() {
         Board b = prepareTestBoard();
 
-        dragon.setState(1); //dragon is dead
+        dragon.setState(GameCharacter.DEAD); //dragon is dead
 
-        b.moveHero('S'); //hero moves to exit
+        b.moveHero(MazeGame.DOWN); //hero moves to exit
 
-        assertEquals(2, b.getBoardState()); //state 2 equals to win
+        assertEquals(MazeGame.GAME_WON, b.getBoardState());
     }
 
     @Test
     public void testHeroTryWinWithoutKilling() {
         Board b = prepareTestBoard();
 
-        b.moveHero('S');
+        b.moveHero(MazeGame.DOWN);
 
         //TODO add assert equals hero same position (didnt move to exit)
         assertEquals(0, b.getBoardState()); //state 0 equals to normal state board
@@ -90,9 +92,9 @@ public class FirstGameModeTests extends TestEnvironment {
     public void testHeroTryWinWithSword() {
         Board b = prepareTestBoard();
 
-        hero.setState(2); //hero armed
+        hero.setState(GameCharacter.ARMED); //hero armed
 
-        b.moveHero('S');
+        b.moveHero(MazeGame.DOWN);
 
         //TODO add assert equals hero same position (didnt move to exit)
         assertEquals(0, b.getBoardState()); //state 0 equals to normal state board

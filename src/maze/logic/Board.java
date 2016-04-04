@@ -1,14 +1,12 @@
 package maze.logic;
 
-import maze.cli.GameLauncher;
-
 import java.util.Arrays;
 import java.util.Random;
 
 
 /**
  *
- * Represents a Game.
+ * Represents a Game Board.
  *
  * @author Andre Reis
  * @author Vasco Ribeiro
@@ -20,7 +18,6 @@ import java.util.Random;
  * @see MazeBuilder
  *
  */
-
 public class Board {
 
     private int size;
@@ -88,9 +85,14 @@ public class Board {
                     board[j][i] = getEmpty();
             }
         }
+        for(GameObject o : objects){
+            if(o.getX() != -1 && o.getY() != -1)
+                if(o.getState() != GameObject.INVISIBLE)
+                    board[o.getY()][o.getX()] = o;
+        }
         for (GameCharacter c : characters) {
-            if (c.state != GameCharacter.DEAD)
-                board[c.getY()][c.getX()] = c;
+                if (c.state != GameCharacter.DEAD)
+                    board[c.getY()][c.getX()] = c;
         }
     }
 
@@ -143,12 +145,11 @@ public class Board {
      *              Movement vertical, -1 for top or 1 for low
      *
      */
-
     private void moveActions(GameCharacter character, int deltax, int deltay) {
         if (board[character.getY() + deltay][character.getX() + deltax].impassable == false && !(board[character.getY() + deltay][character.getX() + deltax].equals(getExit()) && !allDragonsDead())) {
             if (character.state == GameCharacter.ARMED && character.representations[0] == 'D') {
                 character.state = GameCharacter.VISIBLE;
-                board[character.getY() + deltay][character.getX() + deltax].state = GameObject.VISIBLE;
+                getSword().state = GameObject.VISIBLE;
             }
             if (board[character.getY() + deltay][character.getX() + deltax].equipable == true && board[character.getY() + deltay][character.getX() + deltax].state == GameObject.VISIBLE) {
                 character.state = GameCharacter.ARMED;
@@ -160,9 +161,8 @@ public class Board {
     }
 
     /**
-     *
-     * Moves the user 1 position to the specified direction by the user.
-     * Moves the character only if the movement is valid and takes care of any actions caused by the movement.
+     * Moves the hero 1 position to the specified direction by the user.
+     * Moves the character only if the movement is valid and takes care of any actions caused by the movement
      *
      * @param userInput
      *              Direction char that user inputed
@@ -170,7 +170,6 @@ public class Board {
      * @see {@link private void moveActions(GameCharacter character, int deltax, int deltay)}
      *
      */
-
     public void moveHero(char userInput) {
         int deltax = 0, deltay = 0;
         switch (userInput) {
@@ -189,6 +188,7 @@ public class Board {
             default:
                 return;
         }
+        getHero().setLastMovement(userInput);
         moveActions(getHero(), deltax, deltay);
     }
 
@@ -198,26 +198,28 @@ public class Board {
      *
      */
     public void moveDragon(GameCharacter dragon) {
-        if (dragon.state == GameCharacter.VISIBLE) {
+        if (dragon.state == GameCharacter.VISIBLE || dragon.state == GameCharacter.ARMED) {
             Random random = new Random();
             int deltax = 0, deltay = 0;
-            int movement = random.nextInt(5);
-            switch (movement) {
-                case 0:
-                    return;
-                case 1:
+            char[] movementOptions = new char[]{' ', MazeGame.LEFT, MazeGame.RIGHT, MazeGame.UP, MazeGame.DOWN};
+            int movementIndex = random.nextInt(5);
+            switch (movementOptions[movementIndex]) {
+                case MazeGame.LEFT:
                     deltax = -1;
                     break;
-                case 2:
+                case MazeGame.RIGHT:
                     deltax = 1;
                     break;
-                case 3:
+                case MazeGame.UP:
                     deltay = -1;
                     break;
-                case 4:
+                case MazeGame.DOWN:
                     deltay = 1;
                     break;
+                default:
+                    return;
             }
+            dragon.setLastMovement(movementOptions[movementIndex]);
             moveActions(dragon, deltax, deltay);
         }
     }
@@ -359,10 +361,22 @@ public class Board {
      * @return exit
      *
      */
-
-    private GameObject getExit() {
+    public GameObject getExit() {
         return this.objects[3];
     }
+
+    /**
+     *
+     * Return the sword of the board.
+     *
+     * @return sword
+     *
+     */
+    public GameObject getSword() {
+        return this.objects[2];
+    }
+
+
 
     /**
      *
@@ -394,6 +408,10 @@ public class Board {
 
     public void setCharacters(GameCharacter[] characters) {
         this.characters = characters;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
 
