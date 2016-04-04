@@ -265,9 +265,8 @@ public class AppWindow {
                 	public void actionPerformed(ActionEvent arg0) {
                 		game = new MazeGame(11, 1, -1);
                 		MazeCreator mc = new MazeCreator(game);
+                        mc.setVisible(true);
 
-                        //frmMazeGame.setVisible(true);
-                        //panel.setVisible(true);
                 		panel.setGameBoard(game.getGameBoard());
                 		panel.repaint();
                 		bottomLabel.setText("You can play!");
